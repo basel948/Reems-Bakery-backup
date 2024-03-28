@@ -1,0 +1,194 @@
+.userProfile {
+  display: flex;
+  flex-direction: column;
+}
+
+.userProfilein {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  margin-top: 15vh;
+  gap: 20px;
+}
+
+.leftContainer {
+  width: 20%;
+  border: 1px solid rgb(207, 207, 207);
+  border-radius: 5px;
+  min-height: 50vh;
+}
+
+.rightContainer {
+  width: 60%;
+  border: 1px solid rgb(207, 207, 207);
+  border-radius: 5px;
+  min-height: 50vh;
+}
+/* .container {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.content {
+  margin-top: 100px;
+  align-items: center;
+  width: 100%;
+  padding: 50px;
+}
+
+.right-section {
+  height: 100%;
+  margin-left: 50px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.updateDetails {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.form_main {
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 750px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+  padding: 30px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.062);
+}
+
+.heading {
+  font-size: 2.5em;
+  color: #2e2e2e;
+  font-weight: 700;
+  font-family: "Cairo", sans-serif;
+  margin: 15px 0 30px 0;
+}
+
+.inputContainer {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputField::placeholder {
+  color: rgb(80, 80, 80);
+  font-size: 1rem;
+  font-family: "Cairo", sans-serif;
+  font-weight: 500;
+}
+
+.inputField {
+  width: 80%;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid rgb(173, 173, 173);
+  border-radius: 30px;
+  margin: 20px 10px;
+  color: black;
+  font-size: 1rem;
+  font-weight: 500;
+  padding-right: 40px;
+  box-sizing: border-box;
+  padding-left: 30px;
+}
+
+.inputField:focus {
+  outline: none;
+  border-bottom: 2px solid rgb(199, 114, 255);
+}
+
+.locationButton {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+
+.locationButtonText {
+  color: rgb(80, 80, 80);
+  font-size: 1.4rem;
+  font-family: "Cairo", sans-serif;
+  font-weight: 500;
+}
+
+.mapLocationContainer {
+  height: 200px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.inputIcon {
+  position: absolute;
+  right: 25px;
+}
+
+.eyeIcon {
+  position: absolute;
+  left: 25px;
+  top: 38px;
+}
+
+.button {
+  position: relative;
+  width: 100%;
+  border-radius: 30px;
+  margin: 20px 10px 10px 10px;
+  font-size: larger;
+  padding-right: 40px;
+  padding-left: 30px;
+  color: white;
+  border: 2px solid #8000ff !important;
+  background-color: #8000ff !important;
+  cursor: pointer;
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.253);
+  height: 100%;
+  width: 150px;
+  top: 0;
+  left: -200px;
+  font-family: "Cairo", sans-serif;
+  border-bottom-right-radius: 100px;
+  border-top-left-radius: 100px;
+  filter: blur(10px);
+  transition-duration: 0.5s;
+}
+
+.button:hover::after {
+  transform: translateX(600px) !important;
+  transition-duration: 0.5s !important;
+} */

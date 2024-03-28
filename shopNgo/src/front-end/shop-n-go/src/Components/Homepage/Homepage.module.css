@@ -1,0 +1,31 @@
+.homepage-container {
+  position: relative;
+  background-color: white;
+}
+
+.full-page-image img {
+  height: 100vh; /* Full viewport height */
+  width: 100%; /* Full viewport width */
+  object-fit: cover;
+}
+
+/* .page-content {
+  margin-top: 100px;
+  background-color: white;
+} */
+
+.about-us-paragraph {
+  display: flex;
+  text-align: center;
+  line-height: 43px;
+  font-family: "Cairo", sans-serif;
+  width: 50%;
+  margin: 200px auto 10px auto;
+  font-size: 30px;
+}
+.our-bakery-title {
+  margin: 200px auto 10px auto;
+  text-align: center;
+  font-family: "Cairo", sans-serif;
+  font-size: 60px;
+}

@@ -1,0 +1,11 @@
+.adminMainPage {
+  display: flex;
+  background-color: whitesmoke;
+
+  /* Other styling as needed */
+}
+
+.mainContent {
+  flex-grow: 1;
+  /* Other styling as needed */
+}

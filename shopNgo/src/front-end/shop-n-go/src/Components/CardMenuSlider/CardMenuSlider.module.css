@@ -1,0 +1,49 @@
+.container {
+  width: 100%;
+  background: linear-gradient(to bottom, white 10%, #a9f3ee 90%, transparent);
+}
+
+.our-bakery-cards {
+  position: relative; /* Add this line to set the position context for child elements */
+  display: flex;
+  width: 100%;
+  margin: 0 auto;
+  flex-wrap: nowrap;
+  height: 800px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Hide overflowing cards */
+}
+
+@media only screen and (max-width: 1443px) {
+  .our-bakery-cards {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 1155px) {
+  .our-bakery-cards {
+    width: 100%;
+  }
+}
+
+.prevCard,
+.nextCard {
+  position: absolute; /* Changed from relative to absolute, to position relative to .our-bakery-cards */
+  top: 50%; /* Center it vertically */
+  transform: translateY(-50%); /* Adjust the vertical centering */
+  cursor: pointer;
+  background-color: #f2f2f293;
+  border: none;
+  width: 65px;
+  z-index: 1; /* To appear above the cards */
+}
+
+.prevCard {
+  left: 115px; /* Align this button to the far left of .our-bakery-cards */
+  padding: 15px 5px 15px 0px;
+}
+
+.nextCard {
+  right: 115px; /* Align this button to the far right of .our-bakery-cards */
+  padding: 15px 0px 15px 5px;
+}

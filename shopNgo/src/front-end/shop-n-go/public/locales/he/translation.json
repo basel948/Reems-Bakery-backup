@@ -1,0 +1,55 @@
+{
+  "navbar": {
+    "language": "עִברִית",
+    "shop_online": "קנה באינטרנט",
+    "about_us": "עלינו",
+    "contact_us": "צור קשר",
+    "profile": "חשבון אישי",
+    "sign_out": "התנתק",
+    "user_menu": "רשימת משתמש",
+    "home-page": "העמוד הראשי",
+    "shoping-basket": "סל קניות"
+  },
+  "homepage": {
+    "about-us-paragraph": "מאזנת קריירה תובענית כאחות, תמיד הייתה לי תשוקה לאומנויות האפייה, ובמיוחד לתחום המאפים. מגיל צעיר צץ הכישרון הטבעי שלי להכנת קינוחים טעימים. מימוש כישורי המולד, לקחתי על עצמי לחדד את מלאכתי על ידי הרשמה לקורס באפייה מומחית. היא הצליחה להשיג את התעודה, וכעת החליטה לצאת למסע חדש ומרגש. באותה מסירות ואכפתיות שאני מביאה למקצוע האחיות, היא שואפת ליצור קריירה צדדית באפיית מאפים",
+    "our-bakery-title": "הממתקים שלנו"
+  },
+  "contactUs": {
+    "contact-us-title": "לכל שאלה ניתן לפנות אלינו",
+    "contact-us-form-text": "נשמח לענות על כל שאלה שיש לך, ניתן ליצור איתנו קשר במייל",
+    "submit": "לִשְׁלוֹחַ",
+    "fullName": "שם מלא",
+    "phoneNumber": "מספר הטלפון",
+    "email": "דואר אלקטרוני",
+    "enterYourQuestion": "הכנס את שאלתך כאן"
+  },
+  "productDetails": {
+    "add-to-buy-list-btn": "הוסף לסל",
+    "product-allergies-contains": "מכיל :",
+    "allergies": "רגישות :"
+  },
+  "FanFavouriteItems": {
+    "favorite-items": "מוצרים אהובים",
+    "related-items": "מוצרים דומים"
+  },
+  "ShoppingCart": {
+    "shopping-cart-title": "עגלת הקניות שלך",
+    "remove-items": "למחוק",
+    "total-price": "מחיר סופי :",
+    "price": "המחיר :",
+    "price-for": "מחיר ",
+    "item": " היחידה : ₪",
+    "items": " יחידות : ₪",
+    "to-checkout": "לתשלום",
+    "empty-cart": " עגלת הקניות שלכם ריקה, מלאו אותה ותהנו מהממתקים שלנו "
+  },
+  "AlertDialog": {
+    "dialoge-title": "בחירה מצוינת, אנו מקווים שתאהבו",
+    "dialoge-description": "האם אתה רוצה להמשיך בקנייה או לעבור לתשלום?",
+    "continue-shopping": "המשך בקניות",
+    "to-checkout": "לתשלום"
+  },
+  "Card": {
+    "Show-More": "לדעת יותר"
+  }
+}

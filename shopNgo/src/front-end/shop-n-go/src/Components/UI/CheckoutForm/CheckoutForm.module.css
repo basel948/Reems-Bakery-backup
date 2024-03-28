@@ -1,0 +1,34 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  background: white;
+  width: 30%;
+  padding: 50px 50px;
+  height: 60%;
+  border-radius: 15px;
+  overflow-y: scroll;
+  position: relative;
+}
+
+.cards-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}

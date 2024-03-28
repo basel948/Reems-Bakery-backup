@@ -1,0 +1,45 @@
+.navbar {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box; /* Make sure padding is included in width */
+  transition: background-color 0.3s ease;
+  background-color: black;
+  z-index: 999;
+}
+
+.nav-button,
+.nav-button-language {
+  flex: 1; /* Add flex property */
+  text-align: center; /* Center the text */
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: "Cairo", sans-serif;
+}
+.nav-button:hover,
+.nav-button-language:hover {
+  outline: none;
+  color: rgb(102, 102, 102);
+}
+
+.nav-button:focus {
+  outline: none;
+  color: rgb(102, 102, 102);
+}
+
+.nav-logo {
+  flex: 1; /* Add flex property */
+  text-align: center; /* Center the text */
+  font-family: "Dancing Script", sans-serif;
+  color: white;
+  cursor: pointer;
+
+  font-size: 40px;
+  font-weight: 700;
+}

@@ -1,0 +1,84 @@
+.container {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(245, 245, 245, 0.566);
+}
+
+.section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.arrow {
+  width: 50px;
+  height: 50px;
+  background-color: #a5a5a593;
+  border: none;
+  padding: 0px 15px;
+  margin: 0 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+h2 {
+  font-family: "Cairo", sans-serif;
+}
+.productName {
+  font-weight: bolder;
+  font-family: "Cairo", sans-serif;
+}
+
+.productPrice {
+  font-weight: bold;
+  font-family: "Cairo", sans-serif;
+}
+.arrow:hover {
+  background-color: #91919193;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  height: 300px;
+  margin-right: 10px;
+  width: 100%;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.cardsContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.menuItemCard {
+  flex: 0 0 auto;
+  height: 250px;
+  width: 200px;
+  padding: 15px;
+  margin: 0px 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px #aaa;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.menuItemCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 12px #888;
+}
+
+.menuItemCard img {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.menuItemCard span {
+  margin-top: 5px;
+  text-align: center;
+  font-size: 0.8em;
+}
