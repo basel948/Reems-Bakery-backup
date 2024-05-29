@@ -100,7 +100,6 @@ export default function AllMenuItems() {
 
   const editItemHandler = (item) => {
     // Logic to edit the item
-    // console.log("Edit:", item);
   };
 
   const deleteItemHandler = (item) => {
@@ -115,7 +114,6 @@ export default function AllMenuItems() {
 
   const handleDeleteConfirmation = async (shouldDelete) => {
     if (shouldDelete) {
-      // console.log("Delete:", selectedProduct);
       try {
         await axios.delete(
           `http://localhost:8080/api/menuItems/${selectedProduct.id}`

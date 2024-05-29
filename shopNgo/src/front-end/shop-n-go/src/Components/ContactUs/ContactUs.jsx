@@ -95,11 +95,9 @@ function ContactUs() {
     //       setUser(response.data);
     //     }
     //   } catch (error) {
-    //     console.log(error);
     //     return; // Exit if user creation failed
     //   }
     // } else {
-    //   console.log("User details are not valid");
     //   return; // Exit if validation failed
     // }
     // }
@@ -122,11 +120,6 @@ function ContactUs() {
       .send("service_2qx4g2s", "template_5928ahl", emailDataforUserCompany)
       .then(
         (response) => {
-          console.log(
-            "Email successfully sent!",
-            response.status,
-            response.text
-          );
           setEmail("");
           setFullName("");
           setphoneNumber("");

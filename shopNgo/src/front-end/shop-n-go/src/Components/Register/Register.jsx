@@ -29,7 +29,6 @@ function Register({ show, onClose, switchToLogin }) {
   const [isRePasswordVisible, setIsRePasswordVisible] = useState(false);
   const { userData } = useContext(AppContext);
 
-  // console.log(userData);
   const [user, setUser] = useState({});
 
   let navigate = useNavigate();
@@ -72,7 +71,7 @@ function Register({ show, onClose, switchToLogin }) {
     setMoreInfo(e.target.value);
   };
   const handleLocation = (latitude, longitude, address, city) => {
-    console.log(`${latitude} ${longitude} ${address} ${city}`);
+    // console.log(`${latitude} ${longitude} ${address} ${city}`);
 
     setCurrentLocation({ latitude, longitude, address, city });
 
@@ -116,7 +115,7 @@ function Register({ show, onClose, switchToLogin }) {
     return false;
   };
 
-  console.log(currentLocation);
+  // console.log(currentLocation);
   const registerHandler = async (e) => {
     e.preventDefault();
     setIsFormSubmitted(true);

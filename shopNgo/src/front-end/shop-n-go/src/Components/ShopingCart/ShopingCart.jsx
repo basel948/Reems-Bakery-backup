@@ -76,7 +76,17 @@ function ShopingCart() {
     setUniqueItems((prev) => {
       const updatedItem = { ...prev[productId] };
       updatedItem.quantity = Math.max(updatedItem.quantity + delta, 1);
-      return { ...prev, [productId]: updatedItem };
+
+      const updatedUniqueItems = { ...prev, [productId]: updatedItem };
+
+      // Update initialCartItems based on updatedUniqueItems
+      const updatedCartItems = Object.values(updatedUniqueItems).flatMap(
+        (item) => Array(item.quantity).fill(item)
+      );
+
+      localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+      setInitialCartItems(updatedCartItems); // Sync initialCartItems
+      return updatedUniqueItems;
     });
   };
 
@@ -91,13 +101,9 @@ function ShopingCart() {
 
   // Function to display the Checkout form
   const showCheckoutForm = () => {
-    console.log("Total Price : " + totalPrice);
-
     if (isUserLoggedIn) {
-      console.log("There is a user Logged in");
       setCheckoutFormVisible(true);
     } else {
-      console.log("There is no user logged in");
       setShowLogin(true); // Show the login component if no user is logged in
     }
   };
@@ -108,7 +114,6 @@ function ShopingCart() {
 
   const handleCloseLogin = () => {
     setShowLogin(false);
-    console.log(localStorage.getItem("jwtToken") !== null);
     if (localStorage.getItem("jwtToken") !== null) {
       showCheckoutForm(true);
     }
@@ -120,7 +125,6 @@ function ShopingCart() {
 
   const handleCloseRegister = () => {
     setShowRegister(false);
-    console.log(localStorage.getItem("jwtToken") !== null);
     if (localStorage.getItem("jwtToken") !== null) {
       showCheckoutForm(true);
     }

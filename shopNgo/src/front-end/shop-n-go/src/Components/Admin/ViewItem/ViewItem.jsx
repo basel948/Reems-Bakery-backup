@@ -12,7 +12,6 @@ import InnerSlider from "../../Slider/InnerSlider";
 import styles from "./ViewItem.module.css";
 
 function ViewItem({ product, open, handleClose }) {
-  // console.log(product);
   const { t, i18n } = useTranslation();
 
   const Transition = forwardRef(function Transition(props, ref) {

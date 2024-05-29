@@ -18,7 +18,6 @@ function UserProfile() {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem("jwtToken");
-        console.log(token);
         const response = await axios.get(
           "http://localhost:8080/api/auth/users/currentUser",
           {
@@ -27,7 +26,6 @@ function UserProfile() {
             },
           }
         );
-        console.log(response.data);
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching current user data, " + error);

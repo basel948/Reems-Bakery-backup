@@ -4,7 +4,7 @@ import { TfiLocationPin } from "react-icons/tfi";
 
 const LocationButton = ({ onLocationSelect }) => {
   const getLocation = () => {
-    console.log("in the getLocation method");
+    // console.log("in the getLocation method");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else {
@@ -13,7 +13,7 @@ const LocationButton = ({ onLocationSelect }) => {
   };
 
   const showPosition = async (position) => {
-    console.log("in the showPosition method");
+    // console.log("in the showPosition method");
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
 
@@ -54,7 +54,7 @@ const LocationButton = ({ onLocationSelect }) => {
     try {
       const response = await fetch(url);
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
 
       // Initialize variables for city, town, and suburb
       let city = undefined;
@@ -71,7 +71,7 @@ const LocationButton = ({ onLocationSelect }) => {
       // Determine the most appropriate label based on available data
       const locationLabel = city || town; // Prefers city over town if both are available
 
-      console.log(`Suburb: ${suburb}, Location: ${locationLabel}`);
+      // console.log(`Suburb: ${suburb}, Location: ${locationLabel}`);
 
       // Call onLocationSelect with the determined values
       onLocationSelect(latitude, longitude, suburb, locationLabel);

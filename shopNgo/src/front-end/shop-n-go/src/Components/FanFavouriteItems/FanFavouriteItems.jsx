@@ -19,7 +19,6 @@ function FanFavouriteItems({ currentProduct }) {
   // Declare state to store related products
   const [favoriteProducts, setfavoriteProducts] = useState([]);
 
-  console.log(currentProduct);
 
   // Use useEffect to populate related products when currentProduct changes
   useEffect(() => {

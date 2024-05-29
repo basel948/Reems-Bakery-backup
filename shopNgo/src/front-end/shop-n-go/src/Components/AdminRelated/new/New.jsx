@@ -7,7 +7,6 @@ import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUpload
 const New = ({ inputs, title, imageTitle, buttonTitle }) => {
   const [file, setFile] = useState("");
 
-  console.log(file);
   return (
     <div className={styles["new"]}>
       <SideBar />

@@ -41,3 +41,17 @@
   cursor: pointer;
   font-weight: 700;
 }
+
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .navbar-link {
+    display: none;
+  }
+
+  .navbar {
+    padding: 20px;
+  }
+}

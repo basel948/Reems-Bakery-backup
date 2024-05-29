@@ -9,11 +9,6 @@
   object-fit: cover;
 }
 
-/* .page-content {
-  margin-top: 100px;
-  background-color: white;
-} */
-
 .about-us-paragraph {
   display: flex;
   text-align: center;
@@ -28,4 +23,21 @@
   text-align: center;
   font-family: "Cairo", sans-serif;
   font-size: 60px;
+}
+
+@media (max-width: 768px) {
+  .homepage-container {
+    padding: 20px;
+  }
+
+  .about-us-paragraph {
+    width: 100%;
+    font-size: 20px;
+    margin: 50px auto;
+  }
+
+  .our-bakery-title {
+    font-size: 40px;
+    margin: 50px auto;
+  }
 }

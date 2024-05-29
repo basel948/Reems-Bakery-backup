@@ -12,12 +12,15 @@ import MenuItem from "@mui/material/MenuItem"; // Material-UI menu item componen
 const Navbar = ({ isTransparent }) => {
   // State for handling scroll behavior
   const [scroll, setScroll] = useState(false);
+
   // i18next hook for translation
   const { t, i18n } = useTranslation();
+
   // Hook for page navigation
   const navigate = useNavigate();
   // Context to access global state
   const { categories } = useContext(AppContext);
+
   // State for controlling the first dropdown menu
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   // Determines if the first menu is open
@@ -47,9 +50,9 @@ const Navbar = ({ isTransparent }) => {
     const checkTokenPresence = () => {
       const token = localStorage.getItem("jwtToken");
       setIsThereAUser(!!token);
-      if (token) {
-        navigate("/", { replace: true });
-      }
+      // if (token) {
+      //   navigate("/", { replace: true });
+      // }
     };
 
     // Check token presence on mount
@@ -99,6 +102,7 @@ const Navbar = ({ isTransparent }) => {
   const handleSignOut = () => {
     localStorage.removeItem("jwtToken");
     localStorage.removeItem("userData");
+    localStorage.removeItem("cartItems");
     setIsThereAUser(false); // Update state to reflect logout
     handleUserMenuClose();
     setLogoutInProgress(true);
@@ -119,7 +123,6 @@ const Navbar = ({ isTransparent }) => {
   const toggleLanguage = () => {
     setTranslationInProgress(true); // Set translation in progress
     i18n.changeLanguage(i18n.language === "ar" ? "he" : "ar");
-    console.log(i18n.language);
     navigate("/", { replace: true });
     handleUserMenuClose();
   };
@@ -129,8 +132,6 @@ const Navbar = ({ isTransparent }) => {
     setIsLoginVisible(true);
     handleUserMenuClose();
   };
-
-  console.log(isThereAUser);
 
   // Rendering the navbar component
   return (
@@ -242,7 +243,7 @@ const Navbar = ({ isTransparent }) => {
       >
         {isThereAUser && (
           <div>
-            <MenuItem onClick={() => navigate("/profile")}>
+            <MenuItem onClick={() => navigate("/profile/accountsettings")}>
               {t("navbar.profile")}
             </MenuItem>
             <MenuItem onClick={() => toggleLanguage()}>

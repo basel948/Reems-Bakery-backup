@@ -11,6 +11,8 @@ function LocationMap({ latitude, longitude }) {
     zoom: 16,
   };
 
+  console.log("Latitude: ", latitude);
+  console.log("Longitude: ", longitude);
   return (
     // Important! Always set the container height explicitly
     <div style={{ height: "200px", width: "100%" }}>

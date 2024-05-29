@@ -57,7 +57,6 @@ function Login({ show, onClose, switchToRegister }) {
     if (foundUser) {
       setUserData(foundUser);
     } else {
-      // console.log("User not found");
       setUserData(null); // Explicitly set to null if user not found
       setIsEmailValid(false);
       setIsPasswordValid(false);
@@ -67,10 +66,7 @@ function Login({ show, onClose, switchToRegister }) {
   const loginHandler = async (e) => {
     e.preventDefault();
     setIsFormSubmitted(true);
-    console.log(email);
-    console.log(password);
-    console.log(isEmailValid);
-    console.log(isPasswordValid);
+
     if (email && password && isEmailValid && isPasswordValid) {
       const user = {
         username: email,
@@ -81,8 +77,6 @@ function Login({ show, onClose, switchToRegister }) {
           "http://localhost:8080/api/auth/signin",
           user
         );
-        console.log(response);
-        console.log(response.status === 200);
         if (response.status === 200) {
           setLoginInProgress(true);
           // store the token into the session or localStorage.
@@ -92,8 +86,12 @@ function Login({ show, onClose, switchToRegister }) {
           // hide the login form
           onClose();
           navigate("/", { behavior: "smooth" });
+        } else {
+          alert("Login unsuccessful. Please check your details.");
         }
-      } catch (error) {}
+      } catch (error) {
+        alert("Login unsuccessful. Please try again.");
+      }
     } else {
       setIsEmailValid(false);
       setIsPasswordValid(false);

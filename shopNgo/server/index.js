@@ -32,5 +32,5 @@ app.post("/my-server/capture-paypal-order", async (req, res) => {
 
 
 app.listen(PORT, () => {
-    console.log("Server listening at https://localhost:${PORT}/")
+    // console.log("Server listening at https://localhost:${PORT}/")
 })

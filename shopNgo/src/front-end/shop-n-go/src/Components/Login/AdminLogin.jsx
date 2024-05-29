@@ -52,15 +52,12 @@ function AdminLogin() {
 
   const getUserData = (email, password) => {
     const foundUser = userData.find((userData) => userData.email === email);
-    console.log(email, password);
-    console.log(foundUser);
     if (foundUser) {
       if (foundUser.admin === true && foundUser.password === password) {
         setUser(foundUser);
         return foundUser;
       }
     } else {
-      // console.log("User not found");
       setUserData(null); // Explicitly set to null if user not found
       setIsEmailValid(false);
       setIsPasswordValid(false);
@@ -72,7 +69,6 @@ function AdminLogin() {
     setIsFormSubmitted(true);
     if (email && password && isEmailValid && isPasswordValid) {
       const foundUser = getUserData(email, password);
-      console.log(foundUser);
       if (foundUser) {
         localStorage.setItem("LoggedInUser", JSON.stringify(foundUser));
         navigate(`/admin`);

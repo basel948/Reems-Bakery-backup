@@ -93,8 +93,11 @@ function ProductDetails() {
 
   // Add product to shopping cart
   const addToShopingCart = (productDetails) => {
-    setCartItems((prevCartItems) => [...prevCartItems, productDetails]);
-    localStorage.setItem("cartItems", JSON.stringify(newCartItems));
+    setCartItems((prevCartItems) => {
+      const newCartItems = [...prevCartItems, productDetails];
+      localStorage.setItem("cartItems", JSON.stringify(newCartItems));
+      return newCartItems;
+    });
     setShowDialog(true);
   };
 

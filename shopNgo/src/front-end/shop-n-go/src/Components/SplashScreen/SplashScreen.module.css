@@ -8,6 +8,11 @@
   background-color: #f4f4f4;
 }
 
+.logo {
+  width: 200px;
+  height: 200px;
+}
+
 .cupcake-wrapper {
   position: relative;
   width: 100px;

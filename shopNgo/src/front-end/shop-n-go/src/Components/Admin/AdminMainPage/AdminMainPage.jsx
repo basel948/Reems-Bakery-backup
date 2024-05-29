@@ -44,9 +44,6 @@ function AdminMainPage() {
     setTotalPurchasesAmount(purchases);
   }, [categories, userData]);
 
-  console.log(LoggedInUser);
-  console.log(categories);
-  console.log(LoggedInUser);
   return (
     <div className={styles["adminMainPage"]}>
       <div className={styles["mainContent"]}>
