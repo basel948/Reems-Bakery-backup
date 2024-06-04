@@ -12,7 +12,7 @@ Customers can easily add items to their cart, securely pay online, and choose th
 ## Fast and Easy Delivery:
 The website integrates with a delivery service (if applicable) to ensure swift and reliable product delivery.
 
-##Tech Stack:
+## Tech Stack:
 Frontend: React
 Backend: Java Spring Boot
 Database: MySQL
