@@ -61,6 +61,7 @@ function CheckoutForm({ onClose, totalPrice, cartItems }) {
             <PayPalButtons style={{ layout: "vertical" }} />
           </div>
         )}
+        <button className={styles["submitButton"]}>أدفع</button>
       </div>
     </Modal>
   );

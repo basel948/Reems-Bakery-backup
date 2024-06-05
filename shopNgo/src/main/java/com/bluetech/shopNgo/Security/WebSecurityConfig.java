@@ -64,6 +64,7 @@ public class WebSecurityConfig{
                 .csrf(csrf -> csrf.disable()) // Disabling CSRF protection
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll() // Permitting all requests to /api/auth/**
+                                .requestMatchers("/api/auth/menuItems/addMenuItems").permitAll()
                                 .requestMatchers("/api/test/**").permitAll() // Permitting all requests to /api/test/**
                                 .anyRequest().authenticated() // Any other request must be authenticated
                 )

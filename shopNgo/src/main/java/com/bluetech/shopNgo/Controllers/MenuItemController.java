@@ -14,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth/menuItems")
@@ -78,6 +80,67 @@ public class MenuItemController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/addMenuItems")
+    public ResponseEntity<?> createMenuItems(@RequestPart("menuItems") List<MenuItem> newMenuItems,
+                                             @RequestPart("images") List<MultipartFile> imagesList) {
+        if (newMenuItems.size() > (imagesList.size() / 3)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The number of menuItems must match the number of image sets.");
+        }
+
+        List<MenuItem> createdMenuItems = new ArrayList<>();
+        try {
+            Map<String, List<MultipartFile>> groupedImages = new HashMap<>();
+            for (MultipartFile image : imagesList) {
+                String originalFileName = image.getOriginalFilename();
+                String identifier = originalFileName.split("-")[0].toLowerCase(); // Extract and convert to lowercase
+                groupedImages.computeIfAbsent(identifier, k -> new ArrayList<>()).add(image);
+            }
+
+            // Log the grouped images
+            System.out.println("Grouped Images: " + groupedImages);
+
+            for (MenuItem newMenuItem : newMenuItems) {
+                String identifier = newMenuItem.getIdentifier().toLowerCase(); // Convert to lowercase for comparison
+                List<MultipartFile> images = groupedImages.get(identifier);
+
+                // Log each group of images for debugging
+                System.out.println("MenuItem " + identifier + " Images: " + images);
+
+                if (images == null || images.size() < 3) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Each menuItem must have at least 3 images.");
+                }
+
+                List<String> storedFileNames = new ArrayList<>();
+                for (MultipartFile image : images) {
+                    String storedFileName = storageService.store(image);
+                    storedFileNames.add(storedFileName);
+                }
+
+                MenuItem createdMenuItem = menuItemService.createMenuItem(
+                        newMenuItem.getName_AR(),
+                        newMenuItem.getName_HE(),
+                        newMenuItem.getDescription_AR(),
+                        newMenuItem.getDescription_HE(),
+                        newMenuItem.getPrice(),
+                        newMenuItem.getEstimatedProcessingTime_AR(),
+                        newMenuItem.getEstimatedProcessingTime_HE(),
+                        newMenuItem.getNumberOfServings(),
+                        newMenuItem.getNumberOfPurchases(),
+                        newMenuItem.getIngredients_AR(),
+                        newMenuItem.getIngredients_HE(),
+                        newMenuItem.getCategory().getName_AR(),
+                        storedFileNames
+                );
+                createdMenuItems.add(createdMenuItem);
+            }
+
+            return new ResponseEntity<>(createdMenuItems, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @PutMapping("/{id}/purchase")
     public ResponseEntity<MenuItem> updateItemCounter(@PathVariable Long id, @RequestParam("quantity") int quantity)

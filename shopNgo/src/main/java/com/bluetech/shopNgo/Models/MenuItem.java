@@ -19,6 +19,7 @@ public class MenuItem {
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String identifier;
     private String name_AR;
     private String name_HE;
     private String description_AR;

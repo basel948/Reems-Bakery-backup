@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -20,30 +23,33 @@ public class StorageService {
         System.out.println("in the TOP OF StorageService SERVICE");
 
         try {
-
+            // Ensure the storage directory exists
             Path directory = Paths.get(storageLocation);
             if (!Files.exists(directory)) {
                 Files.createDirectories(directory);
             }
 
+            // Extract file extension
             String originalFileName = file.getOriginalFilename();
             String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-            String storedFileName = UUID.randomUUID().toString() + fileExtension;
 
-//            System.out.println("Original File Name: " + originalFileName);
-//            System.out.println("File Extension: " + fileExtension);
-//            System.out.println("Stored File Name: " + storedFileName);
+            // Generate a unique filename with UUID and timestamp
+            String uniqueID = UUID.randomUUID().toString();
+            String timestamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+            String storedFileName = uniqueID + "_" + timestamp + fileExtension;
 
-            Path location = Paths.get(storageLocation + "/" + storedFileName);
+            // Define the file storage location
+            Path location = directory.resolve(storedFileName);
             System.out.println("Location: " + location.toString());
 
-            Files.copy(file.getInputStream(), location);
+            // Copy the file to the target location
+            Files.copy(file.getInputStream(), location, StandardCopyOption.REPLACE_EXISTING);
             System.out.println("in the BOTTOM OF StorageService SERVICE");
 
             return storedFileName;
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RuntimeException("Failed to store the file.");
+            throw new RuntimeException("Failed to store the file: " + e.getMessage());
         }
     }
 }
