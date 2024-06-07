@@ -8,13 +8,11 @@ import { DarkModeContext } from "./context/darkModeContext";
 const App = () => {
   const { darkMode } = useContext(DarkModeContext);
   return (
-    <div className={darkMode ? "app dark" : "app"}>
+    <BrowserRouter>
       <AppProvider>
-        <BrowserRouter>
-          <AppRouter />
-        </BrowserRouter>
+        <AppRouter />
       </AppProvider>
-    </div>
+    </BrowserRouter>
   );
 };
 

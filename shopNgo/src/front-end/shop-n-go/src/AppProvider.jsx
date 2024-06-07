@@ -1,78 +1,108 @@
-import React, { createContext, useState, useEffect, Children } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 export const AppContext = createContext();
 
 function AppProvider({ children }) {
-  const [userData, setUserData] = useState(
-    JSON.parse(localStorage.getItem("userData")) || null
-  );
-  const [menuItemsData, setMenuItemsData] = useState(
-    JSON.parse(localStorage.getItem("menuItemsData")) || null
-  );
-  const [categories, setCategories] = useState(
-    JSON.parse(localStorage.getItem("categories")) || null
-  );
+  const [userData, setUserData] = useState(null);
+  const [menuItemsData, setMenuItemsData] = useState(null);
+  const [categories, setCategories] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // New state for translation progress
   const [translationInProgress, setTranslationInProgress] = useState(false);
-
-  // New 2 states for login and logout progress
   const [loginInProgress, setLoginInProgress] = useState(false);
   const [logoutInProgress, setLogoutInProgress] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("categories", JSON.stringify(categories));
-  }, [categories]);
-
-  useEffect(() => {
     const fetchData = async () => {
-      if (!userData) {
-        const response = await fetch("http://localhost:8080/api/auth/users");
-        const result = await response.json();
-        localStorage.setItem("userData", JSON.stringify(result));
-        setUserData(result);
-      }
-      if (!menuItemsData) {
-        const response = await fetch(
+      try {
+        console.log("Fetching data...");
+
+        const menuItemsResponse = await fetch(
           "http://localhost:8080/api/auth/menuItems"
         );
-        const result = await response.json();
-        localStorage.setItem("menuItemsData", JSON.stringify(result));
-        setMenuItemsData(result);
-      }
-      if (!categories) {
-        const response = await fetch("http://localhost:8080/api/auth/category");
-        const result = await response.json();
-        localStorage.setItem("categories", JSON.stringify(result));
-        setCategories(result);
+        if (!menuItemsResponse.ok) {
+          throw new Error("Failed to fetch menu items data");
+        }
+        const menuItemsResult = await menuItemsResponse.json();
+        setMenuItemsData(menuItemsResult);
+
+        const categoriesResponse = await fetch(
+          "http://localhost:8080/api/auth/category"
+        );
+        if (!categoriesResponse.ok) {
+          throw new Error("Failed to fetch categories data");
+        }
+        const categoriesResult = await categoriesResponse.json();
+        setCategories(categoriesResult);
+
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
       }
     };
     fetchData();
   }, []);
 
-  const updateCategories = (newCategories) => {
-    const updatedCategories = [...newCategories];
-    setCategories(updatedCategories);
-    localStorage.setItem("categories", JSON.stringify(updatedCategories));
+  useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+    if (token) {
+      fetchUserData(token);
+    }
+  }, []);
+
+  const fetchUserData = async (token) => {
+    try {
+      console.log("Fetching user data...");
+      console.log("Token:", token);
+
+      const response = await axios.get(
+        "http://localhost:8080/api/auth/users/currentUser",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("User data response status:", response.status);
+
+      if (response.status === 200) {
+        console.log("User data fetched successfully");
+        console.log("User data:", response.data);
+        localStorage.setItem("userData", JSON.stringify(response.data));
+        setUserData(response.data);
+        console.log("User data set in context:", response.data);
+      } else {
+        console.error("Failed to fetch user data");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
   };
 
   return (
     <AppContext.Provider
       value={{
         userData,
+        setUserData,
         menuItemsData,
         categories,
-        updateCategories,
+        updateCategories: setCategories,
         translationInProgress,
         setTranslationInProgress,
         loginInProgress,
         setLoginInProgress,
         logoutInProgress,
         setLogoutInProgress,
+        loading,
+        error,
       }}
     >
       {children}
     </AppContext.Provider>
   );
 }
+
 export default AppProvider;

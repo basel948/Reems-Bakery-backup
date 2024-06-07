@@ -1,15 +1,89 @@
 package com.bluetech.shopNgo.Controllers;
 
-// Import statements are omitted for brevity
+//// Import statements are omitted for brevity
+//import com.bluetech.shopNgo.DTO.Request.SignInRequest;
+//import com.bluetech.shopNgo.DTO.Request.SignupRequest;
+//import com.bluetech.shopNgo.DTO.Response.JwtResponse;
+//import com.bluetech.shopNgo.Database.RoleRepository;
+//import com.bluetech.shopNgo.Database.UserRepository;
+//import com.bluetech.shopNgo.Models.ERole;
+//import com.bluetech.shopNgo.Models.Role;
+//import com.bluetech.shopNgo.Models.User;
+//import com.bluetech.shopNgo.DTO.Response.MessageResponse;
+//import com.bluetech.shopNgo.Security.JWT.JwtUtils;
+//import com.bluetech.shopNgo.Security.Services.UserDetailsImpl;
+//import jakarta.validation.Valid;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.http.ResponseEntity;
+//import org.springframework.security.authentication.AuthenticationManager;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.web.bind.annotation.*;
+//
+//import java.util.HashSet;
+//import java.util.List;
+//import java.util.Set;
+//import java.util.stream.Collectors;
+//
+//
+//@RestController // Marks this class as a REST controller
+//@RequestMapping("/api/auth") // Maps requests to /api/auth path
+//public class AuthController {
+//
+//    // Field injections for various components used in this controller
+//    @Autowired
+//    AuthenticationManager authenticationManager;
+//    @Autowired
+//    UserRepository userRepository;
+//    @Autowired
+//    RoleRepository roleRepository;
+//    @Autowired
+//    PasswordEncoder encoder;
+//    @Autowired
+//    JwtUtils jwtUtils;
+//
+//    // POST endpoint for signing in a user
+//    @PostMapping("/signin")
+//    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest){
+//        // Authenticate the user
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
+//
+//        // Set the authentication in the security context
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        // Generate JWT token for authenticated user
+//        String jwt = jwtUtils.generateJwtTokenString(authentication);
+//
+//        // Get UserDetails from the authentication object
+//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+//        // Extract roles from UserDetails and convert to List<String>
+//        List<String> roles = userDetails.getAuthorities().stream()
+//                .map(item -> item.getAuthority())
+//                .collect(Collectors.toList());
+//
+//        // Return JWT response including token and user details
+//        return ResponseEntity.ok(new JwtResponse(jwt,
+//                userDetails.getId(),
+//                userDetails.getUsername(),
+//                userDetails.getEmail(),
+//                roles));
+//    }
+//
+
+//}
+
+
 import com.bluetech.shopNgo.DTO.Request.SignInRequest;
 import com.bluetech.shopNgo.DTO.Request.SignupRequest;
 import com.bluetech.shopNgo.DTO.Response.JwtResponse;
+import com.bluetech.shopNgo.DTO.Response.MessageResponse;
 import com.bluetech.shopNgo.Database.RoleRepository;
 import com.bluetech.shopNgo.Database.UserRepository;
 import com.bluetech.shopNgo.Models.ERole;
 import com.bluetech.shopNgo.Models.Role;
 import com.bluetech.shopNgo.Models.User;
-import com.bluetech.shopNgo.DTO.Response.MessageResponse;
 import com.bluetech.shopNgo.Security.JWT.JwtUtils;
 import com.bluetech.shopNgo.Security.Services.UserDetailsImpl;
 import jakarta.validation.Valid;
@@ -20,56 +94,105 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
-@RestController // Marks this class as a REST controller
-@RequestMapping("/api/auth") // Maps requests to /api/auth path
+@RestController
+@RequestMapping("/api/auth")
 public class AuthController {
 
-    // Field injections for various components used in this controller
     @Autowired
     AuthenticationManager authenticationManager;
+
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    RoleRepository roleRepository;
-    @Autowired
-    PasswordEncoder encoder;
+
     @Autowired
     JwtUtils jwtUtils;
 
-    // POST endpoint for signing in a user
+    @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
+    PasswordEncoder encoder;
+
     @PostMapping("/signin")
-    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest){
-        // Authenticate the user
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
+    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
+        String login = signInRequest.getLogin();
+        Authentication authentication;
 
-        // Set the authentication in the security context
+        if (login.contains("@")) {
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(login, signInRequest.getPassword()));
+        } else {
+            authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(login, signInRequest.getPassword()));
+        }
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        // Generate JWT token for authenticated user
-        String jwt = jwtUtils.generateJwtTokenString(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+        Date expirationTime = jwtUtils.getExpirationDateFromJwtToken(jwt);
 
-        // Get UserDetails from the authentication object
+
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        // Extract roles from UserDetails and convert to List<String>
+        User user = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("Error: User not found."));
+
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        // Return JWT response including token and user details
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
+        JwtResponse jwtResponse = new JwtResponse(
+                jwt,
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getPhoneNumber(),
+                user.getLocation(),
+                roles,
+                expirationTime
+        );
+
+        return ResponseEntity.ok(jwtResponse);
     }
+
+//    @PostMapping("/signin")
+//    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(signInRequest.getLogin(), signInRequest.getPassword()));
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String jwt = jwtUtils.generateJwtToken(authentication);
+//
+//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+//        User user = userRepository.findByUsername(userDetails.getUsername())
+//                .orElseThrow(() -> new RuntimeException("Error: User not found."));
+//
+//        List<String> roles = userDetails.getAuthorities().stream()
+//                .map(item -> item.getAuthority())
+//                .collect(Collectors.toList());
+//
+//        // Include additional user details in the JwtResponse
+//        JwtResponse jwtResponse = new JwtResponse(
+//                jwt,
+//                user.getId(),
+//                user.getUsername(),
+//                user.getEmail(),
+//                user.getPhoneNumber(),
+//                user.getLocation(), // Assuming you have a UserLocationDTO class
+//                roles
+//        );
+//
+//        return ResponseEntity.ok(jwtResponse);
+//    }
 
     // POST endpoint for registering a new user
     @PostMapping("/signup")
@@ -127,3 +250,4 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 }
+

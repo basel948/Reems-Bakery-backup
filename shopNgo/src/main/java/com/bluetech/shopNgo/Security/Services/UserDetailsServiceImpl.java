@@ -20,10 +20,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     // Overridden method from UserDetailsService interface to load user details
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
         // Retrieves user from the database by username. If not found, it throws UsernameNotFoundException
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found With Username " + username));
+        User user = userRepository.findByUsername(usernameOrEmail)
+                .orElseGet(() -> userRepository.findByEmail(usernameOrEmail)
+                        .orElseThrow(() -> new UsernameNotFoundException("User Not Found With Username or Email " + usernameOrEmail)));
 
         // Converts the retrieved User object to UserDetails object using UserDetailsImpl and returns it
         return UserDetailsImpl.build(user);

@@ -17,22 +17,36 @@ import java.util.stream.Collectors;
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L; // For serialization
 
-    private Long id; // User ID
-    private String username; // Username
-    private String email; // Email
-    @JsonIgnore // Password will not be included in serialization
+    private Long id;
+    private String username;
+    private String email;
+    private String phoneNumber;
+    private Double latitude;
+    private Double longitude;
+    private String city;
+    private String address;
+    private String moreInfo;
+    @JsonIgnore
     private String password;
-    private Collection<? extends GrantedAuthority> authorities; // Granted authorities (roles, etc.)
+    private Collection<? extends GrantedAuthority> authorities;
 
     // Constructor
-    public UserDetailsImpl(Long id, String username, String email, String password,
+    public UserDetailsImpl(Long id, String username, String email, String password, String phoneNumber,
+                           Double latitude, Double longitude, String city, String address, String moreInfo,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.city = city;
+        this.address = address;
+        this.moreInfo = moreInfo;
         this.authorities = authorities;
     }
+
 
     // Static method to create UserDetailsImpl from a User entity
     public static UserDetailsImpl build(User user) {
@@ -47,22 +61,50 @@ public class UserDetailsImpl implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
-                authorities
-        );
-    }
+                user.getPhoneNumber(),
+                user.getLocation().getLatitude(),
+                user.getLocation().getLongitude(),
+                user.getLocation().getCity(),
+                user.getLocation().getAddress(),
+                user.getLocation().getMoreInfo(),
+                authorities);
 
-    // Getters for UserDetails interface
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
     }
-
     public Long getId() {
         return id;
     }
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getMoreInfo() {
+        return moreInfo;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override
@@ -75,7 +117,6 @@ public class UserDetailsImpl implements UserDetails {
         return username;
     }
 
-    // Methods for account status; all return true for simplicity
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -96,14 +137,4 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
-    // Equals method based on user ID
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        UserDetailsImpl user = (UserDetailsImpl) o;
-        return Objects.equals(id, user.id);
-    }
 }

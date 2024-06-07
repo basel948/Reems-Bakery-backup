@@ -17,6 +17,7 @@ public class ShopNgoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ShopNgoApplication.class, args);
+		System.out.println("ShopNgoApplication is running...");
 	}
 
 	@Configuration
@@ -35,5 +36,7 @@ public class ShopNgoApplication {
 					.addResourceLocations("classpath:/static/MenuItemsImages/")
 					.setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
 		}
+
+
 	}
 }

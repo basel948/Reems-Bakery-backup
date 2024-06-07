@@ -29,16 +29,18 @@ public class UserController {
 
     @GetMapping("/currentUser")
     public ResponseEntity<User> getCurrentUser(Authentication authentication) {
-        System.out.println("@22222222222222222222222222222222222222222222");
-        System.out.println(authentication);
+        System.out.println("in the CurrentUser Method");
+        System.out.println("Authentication: " + authentication);
         if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
             throw new ResourceNotFoundException("User not authenticated");
         }
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = userRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        System.out.println("Returning user: " + user);
         return ResponseEntity.ok(user);
     }
+
 
     @GetMapping
     public List<User> getAllUsers() {
