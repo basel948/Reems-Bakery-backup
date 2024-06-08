@@ -130,6 +130,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 logger.info("Authentication set in security context");
+            } else {
+                logger.info("JWT token is invalid or null.");
             }
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);
@@ -140,6 +142,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
+        logger.info("Authorization Header: {}", headerAuth);
 
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
             return headerAuth.substring(7);
@@ -147,5 +150,4 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
         return null;
     }
-
 }

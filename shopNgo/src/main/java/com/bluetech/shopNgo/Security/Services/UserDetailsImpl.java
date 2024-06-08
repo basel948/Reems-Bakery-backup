@@ -1,7 +1,7 @@
-// Package declaration
 package com.bluetech.shopNgo.Security.Services;
 
 // Import statements
+import com.bluetech.shopNgo.Models.Order;
 import com.bluetech.shopNgo.Models.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,10 +30,12 @@ public class UserDetailsImpl implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
+    private List<Order> orders;
+
     // Constructor
     public UserDetailsImpl(Long id, String username, String email, String password, String phoneNumber,
                            Double latitude, Double longitude, String city, String address, String moreInfo,
-                           Collection<? extends GrantedAuthority> authorities) {
+                           Collection<? extends GrantedAuthority> authorities , List<Order> orders) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -45,8 +47,8 @@ public class UserDetailsImpl implements UserDetails {
         this.address = address;
         this.moreInfo = moreInfo;
         this.authorities = authorities;
+        this.orders = orders;
     }
-
 
     // Static method to create UserDetailsImpl from a User entity
     public static UserDetailsImpl build(User user) {
@@ -67,9 +69,10 @@ public class UserDetailsImpl implements UserDetails {
                 user.getLocation().getCity(),
                 user.getLocation().getAddress(),
                 user.getLocation().getMoreInfo(),
-                authorities);
-
+                authorities,
+                user.getOrders());
     }
+
     public Long getId() {
         return id;
     }
@@ -100,6 +103,10 @@ public class UserDetailsImpl implements UserDetails {
 
     public String getMoreInfo() {
         return moreInfo;
+    }
+
+    public Location getLocation() {
+        return new Location(latitude, longitude, city, address, moreInfo);
     }
 
     @Override
@@ -137,4 +144,40 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
+    // Inner class to represent Location
+    public static class Location {
+        private Double latitude;
+        private Double longitude;
+        private String city;
+        private String address;
+        private String moreInfo;
+
+        public Location(Double latitude, Double longitude, String city, String address, String moreInfo) {
+            this.latitude = latitude;
+            this.longitude = longitude;
+            this.city = city;
+            this.address = address;
+            this.moreInfo = moreInfo;
+        }
+
+        public Double getLatitude() {
+            return latitude;
+        }
+
+        public Double getLongitude() {
+            return longitude;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public String getMoreInfo() {
+            return moreInfo;
+        }
+    }
 }

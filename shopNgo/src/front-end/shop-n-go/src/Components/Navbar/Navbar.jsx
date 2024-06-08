@@ -1,24 +1,27 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Navbar.module.css";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { AppContext } from "../../AppProvider";
-import Menu from "@mui/material/Menu";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../Redux/features/userSlice";
 import Login from "../Login/Login";
 import Register from "../Register/Register";
+import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 
 const Navbar = ({ isTransparent }) => {
   const [scroll, setScroll] = useState(false);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const { categories, setLogoutInProgress, setLoginInProgress } =
-    useContext(AppContext);
-
+  const dispatch = useDispatch();
+  const categories = useSelector((state) => state.categories.categories);
+  const isThereAUser = useSelector((state) => !!state.user.userData);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const isMenuOpen = Boolean(menuAnchorEl);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
   const isUserMenuOpen = Boolean(userMenuAnchorEl);
+  const [isLoginVisible, setIsLoginVisible] = useState(false);
+  const [isRegisterVisible, setIsRegisterVisible] = useState(false);
 
   const shortCategoriesNames =
     categories?.map((item) =>
@@ -26,25 +29,6 @@ const Navbar = ({ isTransparent }) => {
     ) || [];
   const extendedCategoriesNamesAR = ["كل القائمة", ...shortCategoriesNames];
   const extendedCategoriesNamesHE = ["כל התפריט", ...shortCategoriesNames];
-
-  const { setTranslationInProgress, userData, setUserData } =
-    useContext(AppContext);
-  const [isThereAUser, setIsThereAUser] = useState(false);
-
-  const [isLoginVisible, setIsLoginVisible] = useState(false);
-  const [isRegisterVisible, setIsRegisterVisible] = useState(false);
-
-  useEffect(() => {
-    const checkTokenPresence = () => {
-      const token = localStorage.getItem("jwtToken");
-      setIsThereAUser(!!token);
-    };
-
-    checkTokenPresence();
-    window.addEventListener("storage", checkTokenPresence);
-
-    return () => window.removeEventListener("storage", checkTokenPresence);
-  }, []);
 
   const navigateToMenu = (category) => {
     navigate(`/menu?category=${encodeURIComponent(category)}`);
@@ -75,15 +59,9 @@ const Navbar = ({ isTransparent }) => {
     localStorage.removeItem("jwtToken");
     localStorage.removeItem("userData");
     localStorage.removeItem("cartItems");
-    setIsThereAUser(false);
-    setUserData(null);
     handleUserMenuClose();
-    setLogoutInProgress(true);
-    // Simulate a delay for logout process
-    setTimeout(() => {
-      setLogoutInProgress(false);
-      navigate("/", { replace: true });
-    }, 2000);
+    dispatch(logout());
+    navigate("/", { replace: true });
   };
 
   const switchToRegister = () => {
@@ -94,16 +72,6 @@ const Navbar = ({ isTransparent }) => {
   const switchToLogin = () => {
     setIsRegisterVisible(false);
     setIsLoginVisible(true);
-  };
-
-  const toggleLanguage = () => {
-    setTranslationInProgress(true);
-    i18n.changeLanguage(i18n.language === "ar" ? "he" : "ar");
-    // Simulate a delay for translation process
-    setTimeout(() => {
-      setTranslationInProgress(false);
-      navigate("/", { replace: true });
-    }, 2000);
   };
 
   const handleLoginClick = () => {
@@ -123,7 +91,6 @@ const Navbar = ({ isTransparent }) => {
       >
         {t("navbar.home-page")}
       </button>
-
       <button
         id="shop_online"
         className={styles["nav-button"]}
@@ -134,7 +101,6 @@ const Navbar = ({ isTransparent }) => {
       >
         {t("navbar.shop_online")}
       </button>
-
       <Menu
         id="basic-menu"
         anchorEl={menuAnchorEl}
@@ -170,14 +136,12 @@ const Navbar = ({ isTransparent }) => {
               </MenuItem>
             ))}
       </Menu>
-
       <div
         className={styles["nav-logo"]}
         onClick={() => navigate("/", { behavior: "smooth" })}
       >
         Reem's Bakery
       </div>
-
       <button
         id="shoping-basket"
         className={styles["nav-button"]}
@@ -185,7 +149,6 @@ const Navbar = ({ isTransparent }) => {
       >
         {t("navbar.shoping-basket")}
       </button>
-
       <button
         id="user-menu"
         className={styles["nav-button"]}
@@ -196,7 +159,6 @@ const Navbar = ({ isTransparent }) => {
       >
         {t("navbar.user_menu")}
       </button>
-
       <Menu
         id="user-menu"
         anchorEl={userMenuAnchorEl}
@@ -216,7 +178,6 @@ const Navbar = ({ isTransparent }) => {
             <MenuItem onClick={() => navigate("/profile/accountsettings")}>
               {t("navbar.profile")}
             </MenuItem>
-            <MenuItem onClick={toggleLanguage}>{t("navbar.language")}</MenuItem>
             <MenuItem
               onClick={() => {
                 const contactUs = document.getElementById("contact-us");
@@ -248,24 +209,8 @@ const Navbar = ({ isTransparent }) => {
             <MenuItem onClick={handleSignOut}>{t("navbar.sign_out")}</MenuItem>
           </div>
         )}
-
         {!isThereAUser && (
           <div>
-            <MenuItem onClick={toggleLanguage}>{t("navbar.language")}</MenuItem>
-            <MenuItem
-              onClick={() => {
-                const contactUs = document.getElementById("contact-us");
-                if (contactUs) {
-                  contactUs.scrollIntoView({ behavior: "smooth" });
-                  handleUserMenuClose();
-                } else {
-                  navigate("/", { state: { scrollToContactUs: true } });
-                  handleUserMenuClose();
-                }
-              }}
-            >
-              {t("navbar.contact_us")}
-            </MenuItem>
             <MenuItem
               onClick={() => {
                 const aboutUs = document.getElementById("about-us");
@@ -280,11 +225,24 @@ const Navbar = ({ isTransparent }) => {
             >
               {t("navbar.about_us")}
             </MenuItem>
+            <MenuItem
+              onClick={() => {
+                const contactUs = document.getElementById("contact-us");
+                if (contactUs) {
+                  contactUs.scrollIntoView({ behavior: "smooth" });
+                  handleUserMenuClose();
+                } else {
+                  navigate("/", { state: { scrollToContactUs: true } });
+                  handleUserMenuClose();
+                }
+              }}
+            >
+              {t("navbar.contact_us")}
+            </MenuItem>
             <MenuItem onClick={handleLoginClick}>تسجيل الدخول</MenuItem>
           </div>
         )}
       </Menu>
-
       {isLoginVisible && (
         <Login
           show={isLoginVisible}

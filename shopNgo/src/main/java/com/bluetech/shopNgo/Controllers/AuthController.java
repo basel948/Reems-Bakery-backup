@@ -124,45 +124,72 @@ public class AuthController {
     @Autowired
     PasswordEncoder encoder;
 
-    @PostMapping("/signin")
-    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
-        String login = signInRequest.getLogin();
-        Authentication authentication;
+//    @PostMapping("/signin")
+//    public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
+//        String login = signInRequest.getLogin();
+//        Authentication authentication;
+//
+//        if (login.contains("@")) {
+//            authentication = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(login, signInRequest.getPassword()));
+//        } else {
+//            authentication = authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(login, signInRequest.getPassword()));
+//        }
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String jwt = jwtUtils.generateJwtToken(authentication);
+//        Date expirationTime = jwtUtils.getExpirationDateFromJwtToken(jwt);
+//
+//
+//        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+//        User user = userRepository.findByUsername(userDetails.getUsername())
+//                .orElseThrow(() -> new RuntimeException("Error: User not found."));
+//
+//        List<String> roles = userDetails.getAuthorities().stream()
+//                .map(item -> item.getAuthority())
+//                .collect(Collectors.toList());
+//
+//        JwtResponse jwtResponse = new JwtResponse(
+//                jwt,
+//                user.getId(),
+//                user.getUsername(),
+//                user.getEmail(),
+//                user.getPhoneNumber(),
+//                user.getLocation(),
+//                roles,
+//                expirationTime
+//        );
+//
+//        return ResponseEntity.ok(jwtResponse);
+//    }
 
-        if (login.contains("@")) {
-            authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(login, signInRequest.getPassword()));
-        } else {
-            authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(login, signInRequest.getPassword()));
-        }
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(signInRequest.getLogin(), signInRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-        Date expirationTime = jwtUtils.getExpirationDateFromJwtToken(jwt);
-
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        User user = userRepository.findByUsername(userDetails.getUsername())
-                .orElseThrow(() -> new RuntimeException("Error: User not found."));
 
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        JwtResponse jwtResponse = new JwtResponse(
-                jwt,
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPhoneNumber(),
-                user.getLocation(),
-                roles,
-                expirationTime
-        );
+        UserDetailsImpl.Location location = userDetails.getLocation();
 
-        return ResponseEntity.ok(jwtResponse);
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                userDetails.getPhoneNumber(),
+                location,
+                roles));
     }
+
 
 //    @PostMapping("/signin")
 //    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {

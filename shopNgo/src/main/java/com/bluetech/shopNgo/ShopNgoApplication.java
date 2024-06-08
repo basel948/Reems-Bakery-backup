@@ -27,16 +27,18 @@ public class ShopNgoApplication {
 		public void addCorsMappings(CorsRegistry registry) {
 			registry.addMapping("/**")
 					.allowedOrigins("http://localhost:5173") // Replace with your frontend application's URL
-					.allowedMethods("GET", "POST", "PUT", "DELETE");
+					.allowedMethods("GET", "POST", "PUT", "DELETE")
+					.allowedHeaders("*")
+					.allowCredentials(true)
+					.maxAge(3600); // 1 hour
 		}
 
 		@Override
-		public void addResourceHandlers(ResourceHandlerRegistry registry){
+		public void addResourceHandlers(ResourceHandlerRegistry registry) {
 			registry.addResourceHandler("/MenuItemsImages/**")
 					.addResourceLocations("classpath:/static/MenuItemsImages/")
 					.setCacheControl(CacheControl.maxAge(2, TimeUnit.HOURS).cachePublic());
 		}
-
-
 	}
+
 }

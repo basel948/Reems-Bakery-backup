@@ -1,16 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AdminMainPage.module.css";
 import SideBar from "../SideBar/SideBar";
 import { useParams } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { AppContext } from "../../../AppProvider";
+import { useDispatch, useSelector } from "react-redux";
 import DashBoardTopCard from "../DashoBoardTopCards/DashBoardTopCard";
 import { Grid } from "@mui/material";
 
 function AdminMainPage() {
   const { page } = useParams();
-  const [LoggedInUser, setLoggedInUser] = useState();
-  const { categories, userData } = useContext(AppContext);
+  const [LoggedInUser, setLoggedInUser] = useState(null);
+  const categories = useSelector((state) => state.categories.categories);
+  const userData = useSelector((state) => state.user.userData);
   const [totalUserCounter, setTotalUserCounter] = useState(0);
   const [totalPurchasesAmount, setTotalPurchasesAmount] = useState(0);
   const [totalProfitsAmount, setTotalProfitsAmount] = useState(0);
@@ -27,21 +28,23 @@ function AdminMainPage() {
   }, []);
 
   useEffect(() => {
-    // Count total non-admin users
-    const counter = userData.filter((user) => !user.admin).length;
-    setTotalUserCounter(counter);
+    if (userData && categories) {
+      // Count total non-admin users
+      const counter = userData.filter((user) => !user.admin).length;
+      setTotalUserCounter(counter);
 
-    // Calculate total profits and purchases
-    let profits = 0;
-    let purchases = 0;
-    categories.forEach((cat) => {
-      cat.menuItems.forEach((product) => {
-        profits += product.numberOfPurchases * product.price;
-        purchases += product.numberOfPurchases;
+      // Calculate total profits and purchases
+      let profits = 0;
+      let purchases = 0;
+      categories.forEach((cat) => {
+        cat.menuItems.forEach((product) => {
+          profits += product.numberOfPurchases * product.price;
+          purchases += product.numberOfPurchases;
+        });
       });
-    });
-    setTotalProfitsAmount(profits);
-    setTotalPurchasesAmount(purchases);
+      setTotalProfitsAmount(profits);
+      setTotalPurchasesAmount(purchases);
+    }
   }, [categories, userData]);
 
   return (

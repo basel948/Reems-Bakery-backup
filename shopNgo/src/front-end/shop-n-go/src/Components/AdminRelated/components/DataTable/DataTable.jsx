@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
-import { AppContext } from "../../../../AppProvider";
+import React from "react";
+import { useSelector } from "react-redux";
 import styles from "./DataTable.module.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import { userColumns } from "../../../../dataTableSource";
 import { Link } from "react-router-dom";
-function DataTable() {
-  const { userData } = useContext(AppContext);
 
-  // Assign rows here, inside the component, after userData is defined
-  const useRrows = userData || []; // Adding || [] to handle cases where userData is null or undefined
+function DataTable() {
+  const userData = useSelector((state) => state.users.userData);
+
+  const rows = userData || []; // Adding || [] to handle cases where userData is null or undefined
 
   const actionColumn = [
     {
@@ -38,7 +38,7 @@ function DataTable() {
       </div>
       <DataGrid
         className={styles["dataGrid"]}
-        rows={useRrows}
+        rows={rows}
         columns={userColumns.concat(actionColumn)}
         pageSize={10}
         rowsPerPageOptions={[10]}

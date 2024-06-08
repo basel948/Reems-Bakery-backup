@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
-import { AppContext } from "../../../AppProvider";
+import { useDispatch, useSelector } from "react-redux";
 import IconButton from "@mui/material/IconButton";
 import ViewIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
@@ -11,9 +11,11 @@ import ViewItem from "../ViewItem/ViewItem";
 import Alert from "@mui/material/Alert";
 import DeleteItem from "../DeleteItem/DeleteItem";
 import axios from "axios";
+import { updateCategories } from "../../../Redux/features/categoriesSlice"; // Import the action to update categories
 
 export default function AllMenuItems() {
-  const { categories, updateCategories } = useContext(AppContext);
+  const dispatch = useDispatch();
+  const categories = useSelector((state) => state.categories.categories);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isViewDialogOpen, setViewDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -88,6 +90,7 @@ export default function AllMenuItems() {
       ),
     },
   ];
+
   const viewItemHandler = (item) => {
     setSelectedProduct(item);
     setViewDialogOpen(true); // Open the dialog
@@ -129,9 +132,9 @@ export default function AllMenuItems() {
             ),
           };
         });
-        updateCategories(updatedCategories);
+        dispatch(updateCategories(updatedCategories)); // Dispatch the action to update categories in the store
 
-        // update local storage
+        // Update local storage
         localStorage.setItem("categories", JSON.stringify(updatedCategories));
       } catch (error) {
         alert("Error deleting, Check console for error!");
@@ -142,6 +145,7 @@ export default function AllMenuItems() {
     setDeleteDialogOpen(false);
     setSelectedProduct(null);
   };
+
   // Transform categories into a flat array of menu items, each with its category name
   const transformedMenuItems = categories.flatMap((category) =>
     category.menuItems.map((item) => ({

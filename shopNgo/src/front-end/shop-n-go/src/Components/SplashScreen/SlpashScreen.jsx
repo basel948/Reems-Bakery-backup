@@ -1,11 +1,12 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import styles from "./SplashScreen.module.css";
 import Homepage from "../Homepage/Homepage";
 import logo from "../../assets/muffin-animation.gif";
-import { AppContext } from "../../AppProvider";
 
 function SplashScreen() {
-  const { loading, error } = useContext(AppContext);
+  const loading = useSelector((state) => state.app.loading);
+  const error = useSelector((state) => state.app.error);
 
   if (loading) {
     return (
