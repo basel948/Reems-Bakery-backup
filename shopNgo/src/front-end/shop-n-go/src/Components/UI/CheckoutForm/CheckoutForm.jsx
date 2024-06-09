@@ -6,7 +6,7 @@ import DeliveryMethods from "../DeliveryMethods/DeliveryMethods";
 import PaymentMethods from "../PaymentMethods/PaymentMethods";
 import Modal from "../Modal/Modal";
 import LocationMap from "../LocationMap/LocationMap";
-
+import { useSelector } from "react-redux";
 function CheckoutForm({ onClose, totalPrice, cartItems }) {
   useEffect(() => {
     // Add class to body when modal is open
@@ -21,8 +21,8 @@ function CheckoutForm({ onClose, totalPrice, cartItems }) {
   console.log("Cart Items: ", cartItems);
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-  const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-
+  const userData = useSelector((state) => state.user.userData);
+  console.log("User Data: ", userData);
   const PaymentMethodChoosen = (option) => {
     setSelectedPaymentMethod(option);
   };

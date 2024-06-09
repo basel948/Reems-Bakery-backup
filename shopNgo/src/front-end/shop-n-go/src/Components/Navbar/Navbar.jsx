@@ -79,6 +79,17 @@ const Navbar = ({ isTransparent }) => {
     handleUserMenuClose();
   };
 
+  // Function to handle language change
+  const handleLanguageChange = () => {
+    console.log(i18n.language);
+    if (i18n.language === "he") {
+      i18n.changeLanguage("ar");
+    } else {
+      i18n.changeLanguage("he");
+    }
+    handleUserMenuClose();
+  };
+
   return (
     <div
       className={`${styles["navbar"]} ${scroll ? styles["navbar-scroll"] : ""}`}
@@ -206,6 +217,9 @@ const Navbar = ({ isTransparent }) => {
             >
               {t("navbar.about_us")}
             </MenuItem>
+            <MenuItem onClick={() => handleLanguageChange()}>
+              {t("navbar.language")}
+            </MenuItem>
             <MenuItem onClick={handleSignOut}>{t("navbar.sign_out")}</MenuItem>
           </div>
         )}
@@ -239,7 +253,12 @@ const Navbar = ({ isTransparent }) => {
             >
               {t("navbar.contact_us")}
             </MenuItem>
-            <MenuItem onClick={handleLoginClick}>تسجيل الدخول</MenuItem>
+            <MenuItem onClick={() => handleLanguageChange()}>
+              {t("navbar.language")}
+            </MenuItem>
+            <MenuItem onClick={handleLoginClick}>
+              {t("navbar.sign_in")}
+            </MenuItem>
           </div>
         )}
       </Menu>

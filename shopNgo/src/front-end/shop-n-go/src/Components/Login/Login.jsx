@@ -6,6 +6,7 @@ import axios from "axios"; // Import axios for making HTTP requests
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
 import { useDispatch, useSelector } from "react-redux"; // Import hooks from react-redux
 import { loginUser } from "../../Redux/features/userSlice"; // Import loginUser action from userSlice
+import CustomAlert from "../UI/CustomAlert/CustomAlert";
 
 function Login({ show, onClose, switchToRegister }) {
   // Define state variables using useState hook
@@ -75,6 +76,7 @@ function Login({ show, onClose, switchToRegister }) {
         .unwrap()
         .then(() => {
           onClose(); // Close the login form
+          <CustomAlert message="تم تسجيل الدخول بنجاح" type="success" />;
           navigate("/", { behavior: "smooth" }); // Navigate to the home page
         })
         .catch((err) => {

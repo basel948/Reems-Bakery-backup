@@ -5,6 +5,7 @@ import menuItemsReducer from './features/menuItemsSlice';
 import categoriesReducer from './features/categoriesSlice';
 import appReducer from './features/appSlice';
 import darkModeReducer from './features/darkModeSlice';
+import alertSlice from './features/alertSlice';
 
 
 export const store = configureStore({
@@ -14,6 +15,7 @@ export const store = configureStore({
         categories: categoriesReducer,
         app: appReducer,
         darkMode: darkModeReducer,
+        alert: alertSlice,
     },
     devTools: process.env.NODE_ENV !== 'production',
 });

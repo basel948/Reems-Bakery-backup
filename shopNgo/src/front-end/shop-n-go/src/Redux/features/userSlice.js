@@ -1,83 +1,83 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'; // Import necessary functions from Redux Toolkit
-import axios from 'axios'; // Import axios for making HTTP requests
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode'; // Import jwt-decode
 
 // Async thunk to fetch all users
 export const fetchAllUsers = createAsyncThunk('user/fetchAllUsers', async () => {
-    const response = await axios.get('http://localhost:8080/api/auth/users'); // Make GET request to fetch all users
+    const response = await axios.get('http://localhost:8080/api/auth/users');
     console.log(response.data);
-    return response.data; // Return the fetched users data
+    return response.data;
 });
 
 // Async thunk to login a user
 export const loginUser = createAsyncThunk('user/loginUser', async (user, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:8080/api/auth/signin', user); // Make POST request to sign in
-        const token = response.data.token; // Extract the token from the response
-        const tokenType = response.data.type; // Extract the token type from the response
-        localStorage.setItem('jwtToken', token); // Store the token in localStorage
+        const response = await axios.post('http://localhost:8080/api/auth/signin', user);
+        const token = response.data.token;
+        const tokenType = response.data.type;
+        localStorage.setItem('jwtToken', token);
         console.log(response.data);
         console.log(token);
-        const userResponse = await axios.get(`http://localhost:8080/api/auth/users/currentUser`, {
+        const userResponse = await axios.get('http://localhost:8080/api/auth/users/currentUser', {
             headers: {
-                Authorization: `${tokenType} ${token}` // Set the Authorization header with the token
+                Authorization: `${tokenType} ${token}`
             }
         });
         console.log(userResponse.data);
-        return userResponse.data; // Return the fetched user data
+        return userResponse.data;
     } catch (error) {
-        return rejectWithValue(error.response.data); // Handle error by rejecting with the error message
+        return rejectWithValue(error.response.data);
     }
 });
 
 // Create a slice for user state management
 const userSlice = createSlice({
-    name: 'user', // Name of the slice
+    name: 'user',
     initialState: {
-        users: [], // Array to store all users
-        userData: null, // Object to store the logged-in user's data
-        token: localStorage.getItem('jwtToken') || null, // Token for authentication, retrieved from localStorage
-        status: 'idle', // Status of the async actions
-        error: null, // Error message if any
+        users: [],
+        userData: null,
+        token: localStorage.getItem('jwtToken') || null,
+        status: 'idle',
+        error: null,
     },
     reducers: {
         logout: (state) => {
-            state.userData = null; // Clear user data on logout
-            state.token = null; // Clear the token on logout
-            localStorage.removeItem('jwtToken'); // Remove the token from localStorage
+            state.userData = null;
+            state.token = null;
+            localStorage.removeItem('jwtToken');
         },
         setUserData: (state, action) => {
-            state.userData = action.payload; // Set user data manually
+            state.userData = action.payload;
         },
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchAllUsers.pending, (state) => {
-                state.status = 'loading'; // Set status to loading when fetching users
+                state.status = 'loading';
             })
             .addCase(fetchAllUsers.fulfilled, (state, action) => {
-                state.status = 'succeeded'; // Set status to succeeded when fetching is successful
-                state.users = action.payload; // Store the fetched users in state
+                state.status = 'succeeded';
+                state.users = action.payload;
             })
             .addCase(fetchAllUsers.rejected, (state, action) => {
-                state.status = 'failed'; // Set status to failed when fetching fails
-                state.error = action.error.message; // Store the error message in state
+                state.status = 'failed';
+                state.error = action.error.message;
             })
             .addCase(loginUser.pending, (state) => {
-                state.status = 'loading'; // Set status to loading when logging in
+                state.status = 'loading';
             })
             .addCase(loginUser.fulfilled, (state, action) => {
-                state.status = 'succeeded'; // Set status to succeeded when login is successful
-                state.userData = action.payload; // Store the logged-in user's data in state
-                state.token = localStorage.getItem('jwtToken'); // Retrieve the token from localStorage
+                state.status = 'succeeded';
+                state.userData = action.payload;
+                state.token = localStorage.getItem('jwtToken');
             })
             .addCase(loginUser.rejected, (state, action) => {
-                state.status = 'failed'; // Set status to failed when login fails
-                state.error = action.payload || action.error.message; // Store the error message in state
+                state.status = 'failed';
+                state.error = action.payload || action.error.message;
             });
     },
 });
 
-// Export actions and reducer
 export const { logout, setUserData } = userSlice.actions;
 
 export default userSlice.reducer;

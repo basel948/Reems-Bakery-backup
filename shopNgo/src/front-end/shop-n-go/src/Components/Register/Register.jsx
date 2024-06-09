@@ -9,6 +9,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BsFillTelephoneInboundFill } from "react-icons/bs";
 import LocationButton from "../UI/LocationButton/LocationButton";
 import LocationMap from "../UI/LocationMap/LocationMap";
+import CustomAlert from "../UI/CustomAlert/CustomAlert";
 
 function Register({ show, onClose, switchToLogin }) {
   const [username, setUsername] = useState("");
@@ -156,7 +157,8 @@ function Register({ show, onClose, switchToLogin }) {
           if (response.status === 200) {
             setUser(response.data);
             setTimeout(() => {
-              alert("You have successfully been registered!");
+              <CustomAlert message="You have successfully been registered!" />;
+              // alert("You have successfully been registered!");
               switchToLogin();
             }, 3000);
           }
