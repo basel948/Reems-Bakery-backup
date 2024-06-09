@@ -1,8 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import styles from "./Register.module.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AppContext } from "../../AppProvider";
 import { FaUserAlt } from "react-icons/fa";
 import { MdAlternateEmail, MdLock, MdOutlineLockReset } from "react-icons/md";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -17,7 +17,7 @@ function Register({ show, onClose, switchToLogin }) {
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [password, setPassword] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(true);
-  const [phoneNumber, setphoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [isPhoneNumberValid, setIsPhoneNumberValid] = useState(true);
   const [rePassword, setRePassword] = useState("");
   const [isRePasswordValid, setIsRePasswordValid] = useState(true);
@@ -27,7 +27,8 @@ function Register({ show, onClose, switchToLogin }) {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isRePasswordVisible, setIsRePasswordVisible] = useState(false);
-  const { userData } = useContext(AppContext);
+
+  const userData = useSelector((state) => state.user.userData || []);
 
   const [user, setUser] = useState({});
 
@@ -40,21 +41,25 @@ function Register({ show, onClose, switchToLogin }) {
   const toggleRePasswordVisibility = () => {
     setIsRePasswordVisible(!isRePasswordVisible);
   };
+
   const usernameHandler = (e) => {
     setUsername(e.target.value);
     setIsUsernameValid(e.target.value.length >= 3);
   };
+
   const emailHandler = (e) => {
     let emailValue = e.target.value;
     setEmail(emailValue);
     setIsEmailValid(validateEmail(emailValue));
   };
+
   const passwordHandler = (e) => {
     setPassword(e.target.value);
     setIsPasswordValid(
       e.target.value.length > 4 && passHasCapital(e.target.value)
     );
   };
+
   const rePasswordHandler = (e) => {
     setRePassword(e.target.value);
     setIsRePasswordValid(
@@ -63,24 +68,21 @@ function Register({ show, onClose, switchToLogin }) {
   };
 
   const phoneNumberHandler = (e) => {
-    setphoneNumber(e.target.value);
+    setPhoneNumber(e.target.value);
     setIsPhoneNumberValid(e.target.value.length === 10);
   };
 
   const moreInfoHandler = (e) => {
     setMoreInfo(e.target.value);
   };
+
   const handleLocation = (latitude, longitude, address, city) => {
-    // console.log(`${latitude} ${longitude} ${address} ${city}`);
-
     setCurrentLocation({ latitude, longitude, address, city });
-
     if (latitude && longitude) {
-      setIsCurrentLocationValid(true); // Set the flag to true if location is obtained
+      setIsCurrentLocationValid(true);
     }
   };
 
-  // Close handler to call onClose when you want to close the modal
   const handleCloseClick = (e) => {
     e.preventDefault();
     onClose();
@@ -100,22 +102,18 @@ function Register({ show, onClose, switchToLogin }) {
     return String(email)
       .toLowerCase()
       .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
 
   const UserAlreadyExistsInDB = (email) => {
-    // Check if userData is an array and has elements
     if (Array.isArray(userData) && userData.length) {
       return userData.some((user) => user.email === email);
     }
-
-    // If userData is not an array or is empty, return false
     console.error("userData is not an array or is empty");
     return false;
   };
 
-  // console.log(currentLocation);
   const registerHandler = async (e) => {
     e.preventDefault();
     setIsFormSubmitted(true);
@@ -127,7 +125,7 @@ function Register({ show, onClose, switchToLogin }) {
       setIsRePasswordValid(false);
       setIsPhoneNumberValid(false);
       setIsCurrentLocationValid(false);
-      return; // exit the function if validation fails
+      return;
     }
 
     if (!UserAlreadyExistsInDB(email)) {
@@ -145,7 +143,7 @@ function Register({ show, onClose, switchToLogin }) {
           password: password,
           phoneNumber: phoneNumber,
           latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude, // Add the location data
+          longitude: currentLocation.longitude,
           city: currentLocation.city,
           address: currentLocation.address,
           moreInfo: moreInfo,
@@ -160,28 +158,25 @@ function Register({ show, onClose, switchToLogin }) {
             setTimeout(() => {
               alert("You have successfully been registered!");
               switchToLogin();
-            }, [3000]);
+            }, 3000);
           }
         } catch (error) {
           alert("Error adding employee:", error);
         }
       } else {
-        alert("user details are not valid");
+        alert("User details are not valid");
       }
     } else {
-      alert("user is allready registered");
+      alert("User is already registered");
     }
   };
 
-  if (!show) return null; // If the show prop is false, don't render anything
+  if (!show) return null;
 
   return (
     <div className={styles.modalBackground}>
       <div className={styles.modal}>
-        <button
-          onClick={onClose} // Use the onClose prop to close the popup
-          className={styles.closeButton}
-        >
+        <button onClick={onClose} className={styles.closeButton}>
           X
         </button>
         <div className={styles["register"]}>
@@ -224,7 +219,7 @@ function Register({ show, onClose, switchToLogin }) {
                   className={`${styles["inputField"]} ${
                     !isPasswordValid && isFormSubmitted ? styles["invalid"] : ""
                   }`}
-                  type={isPasswordVisible ? "text" : "password"} // Toggle input type
+                  type={isPasswordVisible ? "text" : "password"}
                   onChange={passwordHandler}
                 />
                 <span onClick={togglePasswordVisibility}>
@@ -250,7 +245,7 @@ function Register({ show, onClose, switchToLogin }) {
                       ? styles["invalid"]
                       : ""
                   }`}
-                  type={isRePasswordVisible ? "text" : "password"} // Toggle input type
+                  type={isRePasswordVisible ? "text" : "password"}
                   onChange={rePasswordHandler}
                 />
                 <span onClick={toggleRePasswordVisibility}>
@@ -289,7 +284,6 @@ function Register({ show, onClose, switchToLogin }) {
                       longitude={currentLocation.longitude}
                     />
                   </div>
-                  {/* Text area for entering additional information */}
                   <textarea
                     rows="4"
                     name="moreinfo"

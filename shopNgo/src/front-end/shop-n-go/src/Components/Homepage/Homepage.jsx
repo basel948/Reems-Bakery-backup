@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import styles from "./Homepage.module.css";
 import Navbar from "../Navbar/Navbar";
 import Slider from "../Slider/Slider";
@@ -7,60 +7,37 @@ import ContactUs from "../ContactUs/ContactUs";
 import SplashScreen from "../SplashScreen/SlpashScreen";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
-import { AppContext } from "../../AppProvider";
+import { useSelector, useDispatch } from "react-redux";
+import { setTranslationInProgress } from "../../Redux/features/appSlice";
 
 function Homepage() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const location = useLocation();
-  const {
-    translationInProgress,
-    setTranslationInProgress,
-    loginInProgress,
-    setLoginInProgress,
-    logoutInProgress,
-    setLogoutInProgress,
-  } = useContext(AppContext);
+  const dispatch = useDispatch();
+  const translationInProgress = useSelector(
+    (state) => state.app.translationInProgress
+  );
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []); // we do this to reset the scroll so we don't scroll to the buttom automatically
+  }, []); // we do this to reset the scroll so we don't scroll to the bottom automatically
 
   useEffect(() => {
     if (translationInProgress) {
-      // Display splash screen for a set time or until translation is ready
       setTimeout(() => {
-        setTranslationInProgress(false); // End translation process
+        dispatch(setTranslationInProgress(false)); // End translation process
       }, 3000); // Adjust duration as needed
     }
-    if (loginInProgress) {
-      setTimeout(() => {
-        setLoginInProgress(false); // End translation process
-      }, 3000); // Adjust duration as needed
-    }
-    if (logoutInProgress) {
-      setTimeout(() => {
-        setLogoutInProgress(false); // End translation process
-      }, 3000); // Adjust duration as needed
-    }
-  }, [
-    translationInProgress,
-    setTranslationInProgress,
-    loginInProgress,
-    setLoginInProgress,
-    logoutInProgress,
-    setLogoutInProgress,
-  ]);
+  }, [translationInProgress, dispatch]);
 
   useEffect(() => {
     if (location.state?.scrollToContactUs) {
-      // Scroll to the specific section
       const contactUs = document.getElementById("contact-us");
       if (contactUs) {
         contactUs.scrollIntoView({ behavior: "smooth" });
       }
     }
     if (location.state?.scrollToAboutUs) {
-      // Scroll to the specific section
       const aboutUs = document.getElementById("about-us");
       if (aboutUs) {
         aboutUs.scrollIntoView({ behavior: "smooth" });
@@ -68,7 +45,7 @@ function Homepage() {
     }
   }, [location]);
 
-  if (translationInProgress || loginInProgress || logoutInProgress) {
+  if (translationInProgress) {
     return <SplashScreen />;
   }
 

@@ -1,17 +1,16 @@
-// Importing necessary modules, components, and styles
-import React, { useEffect, useState, useContext } from "react";
-import SearchBar from "../UI/SearchBar/SearchBar";
-import styles from "./MenuItems.module.css";
+// Import necessary modules, components, hooks, and styles
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AppContext } from "../../AppProvider";
+import styles from "./MenuItems.module.css";
 import { useTranslation } from "react-i18next";
+import SearchBar from "../UI/SearchBar/SearchBar";
 import Navbar from "../Navbar/Navbar";
 
 // MenuItems component definition
 function MenuItems() {
-  // Hook for navigation and access to global state
   let navigate = useNavigate();
-  const { categories = [] } = useContext(AppContext);
+  const categories = useSelector((state) => state.categories.categories);
   const { t, i18n } = useTranslation();
 
   // Retrieve query parameters from URL
@@ -76,7 +75,6 @@ function MenuItems() {
     });
   };
 
-  // Component rendering
   return (
     <div className={styles["container"]}>
       <Navbar isTransparent={false} />
@@ -84,9 +82,7 @@ function MenuItems() {
       <SearchBar onSearch={handleSearch} />
 
       {isSearching ? (
-        // Render search results if searching
         <div className={styles["cardsContainer"]}>
-          {/* Map through search results and render each item */}
           {searchResults.map((product, index) => (
             <div
               key={index}
@@ -110,9 +106,7 @@ function MenuItems() {
           ))}
         </div>
       ) : category === "كل القائمة" ? (
-        // Render all categories if selected
         categories.map((cat, catIndex) => (
-          // Map through each category and render its items
           <div key={catIndex} className={styles["menuItemsContainer"]}>
             <div className={styles["categoryTitleContainer"]}>
               <h1 className={styles["categoryTitle"]}>
@@ -150,9 +144,7 @@ function MenuItems() {
           </div>
         ))
       ) : (
-        // Render items for a specific category
         <div className={styles["menuItemsContainer"]}>
-          {/* Render category title and items */}
           <div className={styles["categoryTitleContainer"]}>
             <h1 className={styles["categoryTitle"]}>{category}</h1>
             <div className={styles["titleLine"]}></div>

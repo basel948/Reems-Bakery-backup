@@ -47,9 +47,16 @@ public class UserController {
         return userRepository.findAll();
     }
 
+//    @GetMapping("/{id}")
+//    public User getUserById(@PathVariable Long id){
+//        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with Id " + id + " was not found"));
+//    }
+
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id){
-        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User with Id " + id + " was not found"));
+    public ResponseEntity<User> getUserById(@PathVariable(value = "id") Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+        return ResponseEntity.ok().body(user);
     }
 
     @PostMapping("/addUser")

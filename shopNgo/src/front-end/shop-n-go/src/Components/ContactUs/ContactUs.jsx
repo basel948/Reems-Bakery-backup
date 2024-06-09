@@ -1,8 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import styles from "./ContactUs.module.css";
 import InputField from "../UI/InputField/InputField";
 import { useTranslation } from "react-i18next";
-import { AppContext } from "../../AppProvider";
+import { useSelector } from "react-redux";
 import PopUp from "../UI/PopUp/PopUp";
 import axios from "axios";
 import emailjs from "@emailjs/browser";
@@ -18,7 +18,7 @@ function ContactUs() {
   const [isPhoneNumberValid, setisPhoneNumberValid] = useState(true);
   const [yourQuestion, setYourQuestion] = useState("");
   const [isYourQuestionValid, setisYourQuestionValid] = useState(true);
-  const { userdata } = useContext(AppContext);
+  const userData = useSelector((state) => state.user.userData) || {};
   const [showPopUp, setShowPopUp] = useState(false);
 
   const fullNameHandler = (e) => {
@@ -48,15 +48,8 @@ function ContactUs() {
       );
   };
 
-  // const UserAlreadyExistsInDB = (email) => {
-  //   //some() method, which tests whether at least one element in the array passes the test implemented by the provided function. It returns a Boolean value (true or false).
-  //   return userdata.some((user) => user.email === email);
-  // };
-
   const submitFormHandler = async (e) => {
     e.preventDefault();
-
-    // Step 1: Check if all fields are empty
 
     if (
       fullName.length === 0 ||
@@ -71,41 +64,8 @@ function ContactUs() {
       return; // exit the function if validation fails
     }
 
-    // Step 2: Check if the user already exists in the database
-    // if (!UserAlreadyExistsInDB(email)) {
-    // if (
-    //   isFullNameValid &&
-    //   isPhoneNumberValid &&
-    //   isEmailValid &&
-    //   isYourQuestionValid
-    // ) {
-    //   const newUser = {
-    //     username: fullName,
-    //     phoneNumber: phoneNumber,
-    //     email: email,
-    //     isAdmin: false,
-    //     yourQuestion: yourQuestion,
-    //   };
-    //   try {
-    //     const response = await axios.post(
-    //       "http://localhost:8080/api/auth/users/addUser",
-    //       newUser
-    //     );
-    //     if (response.status === 200) {
-    //       setUser(response.data);
-    //     }
-    //   } catch (error) {
-    //     return; // Exit if user creation failed
-    //   }
-    // } else {
-    //   return; // Exit if validation failed
-    // }
-    // }
-
-    // Step 3: Send email to the company
     emailjs.init("v086MmqCZ4vjszbAY");
 
-    // Prepare email data
     const emailDataforUserCompany = {
       full_name: fullName,
       from_name: "Reem's Bakery",
@@ -113,8 +73,6 @@ function ContactUs() {
       email: email,
       question: yourQuestion,
     };
-
-    // Send email to company
 
     emailjs
       .send("service_2qx4g2s", "template_5928ahl", emailDataforUserCompany)
@@ -136,6 +94,7 @@ function ContactUs() {
     setShowPopUp(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
   return (
     <div className={styles["container"]}>
       {showPopUp && (

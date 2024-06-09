@@ -1,86 +1,57 @@
-import React, { useContext, useEffect, useState } from "react";
-import axios from "axios"; // Import axios for API calls
-import { AppContext } from "../../AppProvider";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import styles from "./UserAddress.module.css";
 import LocationButton from "../UI/LocationButton/LocationButton";
 import { RxUpdate } from "react-icons/rx";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
-
 import Button from "@mui/material/Button";
 import LocationMap from "../UI/LocationMap/LocationMap";
 import AlertDialogSlide from "../UI/AlertDialog/AlertDialog";
 
 const UserAddress = () => {
   const [show, setShow] = useState(false);
-  const [savedAddress, setSavedAddress] = useState({
-    latitude: 32.5416071,
-    longitude: 35.160425,
-    city: "Umm Al-Fahem",
-    address: "Al-Thoraya 19",
-    moreInfo: "Neghbours of Amir",
-  });
   const [showDialog, setShowDialog] = useState(false);
   const { t, i18n } = useTranslation();
-
-  const [newlatitude, setNewLatitude] = useState();
-  const [newlongitude, setNewLongitude] = useState();
-  const [newCity, setNewCity] = useState();
-  const [newStreet, setNewStreet] = useState();
-  const [newMoreinfo, setNewMoreinfo] = useState();
+  const savedAddress = useSelector((state) => state.user.savedAddress);
 
   const handleAddressUpdate = (updatedAddress) => {
     setShow(true);
   };
 
   const handleAddressDelete = () => {
-    // Logic to delete address in the backend
-    // Remove address from localStorage
-    // here we also should delete the address from the backend
-    // or make them null
     setShowDialog(true);
   };
 
-  // Handle dialog close event
   const handleDialogClose = (userResponse) => {
     setShowDialog(false);
     if (userResponse === "agree") {
-      // Perform deletion logic
       setSavedAddress(null);
-
       setShow(true);
-
-      // Add additional deletion logic here
     }
   };
+
   return (
     <div className={styles["useraddress"]}>
       <div className={styles["addressin"]}>
         {!show && <h1 className={styles["mainhead"]}>Your Main Address</h1>}
-        {
-          !show && (
-            //   savedAddress.map((item, index) => {
-            //     return (
-            <div className={styles["addresscontainer"]}>
-              <div className={styles["map-container"]}>
-                {/* Add LocationMap component here */}
-                <LocationMap
-                  latitude={savedAddress.latitude}
-                  longitude={savedAddress.longitude}
-                />
-              </div>
-              <div className={styles["details-container"]}>
-                <div className={styles["address-details"]}>
-                  <span>{savedAddress.city}</span>
-                  <span>{savedAddress.address}</span>
-                  <span>{savedAddress.moreInfo}</span>
-                </div>
+        {!show && (
+          <div className={styles["addresscontainer"]}>
+            <div className={styles["map-container"]}>
+              <LocationMap
+                latitude={savedAddress.latitude}
+                longitude={savedAddress.longitude}
+              />
+            </div>
+            <div className={styles["details-container"]}>
+              <div className={styles["address-details"]}>
+                <span>{savedAddress.city}</span>
+                <span>{savedAddress.address}</span>
+                <span>{savedAddress.moreInfo}</span>
               </div>
             </div>
-          )
-          //     );
-          //   })
-        }
+          </div>
+        )}
 
         {!show && (
           <div className={styles["actionbtns-group"]}>
@@ -111,7 +82,6 @@ const UserAddress = () => {
                   gap: "15px",
                 }}
                 onClick={() => {
-                  // here we should display a small dialog to make sure of delete the location
                   handleAddressDelete();
                 }}
               >
@@ -134,7 +104,6 @@ const UserAddress = () => {
                 <LocationButton />
               </div>
 
-              {/* address and City input fields */}
               <div className={styles["form-group"]}>
                 <label htmlFor="address">address Name</label>
                 <input
@@ -154,7 +123,6 @@ const UserAddress = () => {
                 />
               </div>
 
-              {/* More Info input field with larger size */}
               <div
                 className={`${styles["form-group"]} ${styles["more-info-group"]}`}
               >
@@ -183,7 +151,6 @@ const UserAddress = () => {
                 <LocationButton />
               </div>
 
-              {/* address and City input fields */}
               <div className={styles["form-group"]}>
                 <label htmlFor="address">address Name</label>
                 <input
@@ -205,7 +172,6 @@ const UserAddress = () => {
                 />
               </div>
 
-              {/* More Info input field with larger size */}
               <div
                 className={`${styles["form-group"]} ${styles["more-info-group"]}`}
               >

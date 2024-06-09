@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
-import { AppContext } from "../../../AppProvider";
+import { useSelector } from "react-redux";
 import styles from "./AllUsers.module.css";
 
 const columns = [
@@ -39,9 +39,8 @@ const columns = [
 ];
 
 export default function AllUsers() {
-  const { userData } = useContext(AppContext);
+  const userData = useSelector((state) => state.users.userData);
 
-  // Assign rows here, inside the component, after userData is defined
   const rows = userData || []; // Adding || [] to handle cases where userData is null or undefined
 
   return (

@@ -1,27 +1,35 @@
-import React, { useState, useContext, useEffect } from "react";
-import styles from "./Login.module.css";
-import { AppContext } from "../../AppProvider";
-import { MdAlternateEmail, MdLock } from "react-icons/md";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Hook for navigation
+import React, { useState } from "react"; // Import React and useState hook
+import styles from "./Login.module.css"; // Import CSS module for styling
+import { MdAlternateEmail, MdLock } from "react-icons/md"; // Import icons from react-icons
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import more icons from react-icons
+import axios from "axios"; // Import axios for making HTTP requests
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
+import { useDispatch, useSelector } from "react-redux"; // Import hooks from react-redux
+import { loginUser } from "../../Redux/features/userSlice"; // Import loginUser action from userSlice
 
 function Login({ show, onClose, switchToRegister }) {
+  // Define state variables using useState hook
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [password, setPassword] = useState("");
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const { setLoginInProgress } = useContext(AppContext);
 
-  // Hook for page navigation
+  // Initialize dispatch and navigate hooks
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userdata } = useContext(AppContext);
 
+  // Get status and error from the Redux store
+  const status = useSelector((state) => state.user.status);
+  const error = useSelector((state) => state.user.error);
+
+  // Toggle password visibility
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
+
+  // Validate email format
   const validateEmail = (email) => {
     return String(email)
       .toLowerCase()
@@ -30,172 +38,116 @@ function Login({ show, onClose, switchToRegister }) {
       );
   };
 
-  const passHasCapital = (password) => {
-    for (let i = 0; i < password.length; i++) {
-      let c = password.charAt(i);
-      if ("A" <= c && c <= "Z") {
-        return true;
-      }
-    }
-    return false;
-  };
+  // Check if password contains at least one capital letter
+  const passHasCapital = (password) => /[A-Z]/.test(password);
+
+  // Handle email input change
   const emailHandler = (e) => {
-    let emailValue = e.target.value;
+    const emailValue = e.target.value;
     setEmail(emailValue);
-    setIsEmailValid(emailValue.length >= 6);
+    setIsEmailValid(validateEmail(emailValue));
   };
 
+  // Handle password input change
   const passwordHandler = (e) => {
-    setPassword(e.target.value);
+    const passwordValue = e.target.value;
+    setPassword(passwordValue);
     setIsPasswordValid(
-      e.target.value.length > 4 && passHasCapital(e.target.value)
+      passwordValue.length > 4 && passHasCapital(passwordValue)
     );
   };
 
-  const getUserData = (email) => {
-    const foundUser = userdata.find((userData) => userData.email === email);
-    if (foundUser) {
-      setUserData(foundUser);
-    } else {
-      setUserData(null); // Explicitly set to null if user not found
-      setIsEmailValid(false);
-      setIsPasswordValid(false);
-    }
-  };
-
-  const loginHandler = async (e) => {
+  // Handle form submission
+  const loginHandler = (e) => {
     e.preventDefault();
     setIsFormSubmitted(true);
 
+    // Check if email and password are valid
     if (email && password && isEmailValid && isPasswordValid) {
       const user = {
-        username: email,
+        login: email,
         password: password,
       };
-      try {
-        const response = await axios.post(
-          "http://localhost:8080/api/auth/signin",
-          user
-        );
-        if (response.status === 200) {
-          setLoginInProgress(true);
-          // store the token into the session or localStorage.
-          localStorage.setItem("jwtToken", response.data.accessToken);
-          // get all the users data from the token and make accessable from every where.
-          fetchUserData(response.data.id, response.data.accessToken);
-          // hide the login form
-          onClose();
-          navigate("/", { behavior: "smooth" });
-        } else {
-          alert("Login unsuccessful. Please check your details.");
-        }
-      } catch (error) {
-        alert("Login unsuccessful. Please try again.");
-      }
+      console.log("User:", user);
+
+      // Dispatch loginUser action with user data
+      dispatch(loginUser(user))
+        .unwrap()
+        .then(() => {
+          onClose(); // Close the login form
+          navigate("/", { behavior: "smooth" }); // Navigate to the home page
+        })
+        .catch((err) => {
+          console.error("Login error:", err);
+          alert("Login unsuccessful. Please check your details."); // Show error message
+        });
     } else {
       setIsEmailValid(false);
       setIsPasswordValid(false);
     }
   };
 
-  const fetchUserData = async (userId, token) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:8080/api/auth/users/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        localStorage.setItem("userData", JSON.stringify(response.data));
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-
-  if (!show) return null; // If the show prop is false, don't render anything
+  // If the show prop is false, don't render anything
+  if (!show) return null;
 
   return (
-    <>
-      <div className={styles["popupOverlay"]}>
-        <div className={styles["popupContent"]}>
-          <button
-            className={styles["closeButton"]}
-            onClick={onClose} // Use the onClose prop to close the popup
-          >
-            X
-          </button>
-          <div className={styles["login"]}>
-            <div className={styles["center"]}>
-              <form
-                className={styles["form_main"]}
-                action=""
-                onSubmit={loginHandler}
-              >
-                <p className={styles["heading"]}>تسجيل الدخول</p>
-                <div className={styles["inputContainer"]}>
-                  <MdAlternateEmail className={styles["inputIcon"]} />
-
-                  <input
-                    placeholder="البريد إلكتروني"
-                    id="email"
-                    className={`${styles["inputField"]} ${
-                      !isEmailValid && isFormSubmitted ? styles["invalid"] : ""
-                    }`}
-                    type="text"
-                    onChange={emailHandler}
-                  />
-                </div>
-
-                <div className={styles["inputContainer"]}>
-                  <span onClick={togglePasswordVisibility}>
-                    <svg
-                      viewBox="0 0 16 16"
-                      fill="#2e2e2e"
-                      height="16"
-                      width="16"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={styles["eyeIcon"]}
-                    >
-                      {isPasswordVisible ? <FaEye /> : <FaEyeSlash />}
-                    </svg>
-                  </span>
-
-                  <input
-                    placeholder="كلمة المرور"
-                    id="password"
-                    className={`${styles["inputField"]} ${
-                      !isPasswordValid && isFormSubmitted
-                        ? styles["invalid"]
-                        : ""
-                    }`}
-                    type={isPasswordVisible ? "text" : "password"} // Toggle input type
-                    onChange={passwordHandler}
-                  />
-
-                  <MdLock className={styles["inputIcon"]} />
-                </div>
-
-                <button className={styles["button"]}>تسجيل</button>
-                <div className={styles["signupContainer"]}>
-                  <p>ليس لديك أي حساب؟</p>
-                  <button
-                    className={styles["signUp"]}
-                    onClick={switchToRegister}
+    <div className={styles["popupOverlay"]}>
+      <div className={styles["popupContent"]}>
+        <button className={styles["closeButton"]} onClick={onClose}>
+          X
+        </button>
+        <div className={styles["login"]}>
+          <div className={styles["center"]}>
+            <form className={styles["form_main"]} onSubmit={loginHandler}>
+              <p className={styles["heading"]}>تسجيل الدخول</p>
+              <div className={styles["inputContainer"]}>
+                <MdAlternateEmail className={styles["inputIcon"]} />
+                <input
+                  placeholder="البريد إلكتروني"
+                  id="email"
+                  className={`${styles["inputField"]} ${
+                    !isEmailValid && isFormSubmitted ? styles["invalid"] : ""
+                  }`}
+                  type="text"
+                  onChange={emailHandler}
+                />
+              </div>
+              <div className={styles["inputContainer"]}>
+                <span onClick={togglePasswordVisibility}>
+                  <svg
+                    viewBox="0 0 16 16"
+                    fill="#2e2e2e"
+                    height="16"
+                    width="16"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={styles["eyeIcon"]}
                   >
-                    قم بالاشتراك
-                  </button>
-                </div>
-              </form>
-            </div>
+                    {isPasswordVisible ? <FaEye /> : <FaEyeSlash />}
+                  </svg>
+                </span>
+                <input
+                  placeholder="كلمة المرور"
+                  id="password"
+                  className={`${styles["inputField"]} ${
+                    !isPasswordValid && isFormSubmitted ? styles["invalid"] : ""
+                  }`}
+                  type={isPasswordVisible ? "text" : "password"}
+                  onChange={passwordHandler}
+                />
+                <MdLock className={styles["inputIcon"]} />
+              </div>
+              <button className={styles["button"]}>تسجيل</button>
+              <div className={styles["signupContainer"]}>
+                <p>ليس لديك أي حساب؟</p>
+                <button className={styles["signUp"]} onClick={switchToRegister}>
+                  قم بالاشتراك
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
