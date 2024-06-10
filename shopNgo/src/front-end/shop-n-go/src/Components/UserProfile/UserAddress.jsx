@@ -7,7 +7,8 @@ import { RiDeleteBinFill } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
 import Button from "@mui/material/Button";
 import LocationMap from "../UI/LocationMap/LocationMap";
-import AlertDialogSlide from "../UI/AlertDialog/AlertDialog";
+import Swal from "sweetalert2";
+import StandartSwalAlert from "../UI/SwalAlert/StandartSwalAlert";
 
 const UserAddress = () => {
   const [show, setShow] = useState(false);
@@ -200,16 +201,30 @@ const UserAddress = () => {
             </div>
           </div>
         )}
-        {showDialog && (
-          <AlertDialogSlide
-            open={showDialog}
-            onClose={handleDialogClose}
-            dialogeTitle={t("AlertDialog.dialoge-title2")}
-            dialogContentText={t("AlertDialog.dialoge-description2")}
-            disagreeButton={t("AlertDialog.cancel")}
-            agreeButton={t("AlertDialog.delete")}
-          />
-        )}
+        {showDialog &&
+          StandartSwalAlert({
+            title: t("Dialoges.confirmDeletionTitle"),
+            titleText: t("Dialoges.confirmDeletionText"),
+            icon: "warning",
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonText: t("Dialoges.delete"),
+            cancelButtonText: t("Dialoges.cancel"),
+            showClass: {
+              popup: `
+              animate__animated
+              animate__fadeInUp
+              animate__faster
+            `,
+            },
+            hideClass: {
+              popup: `
+              animate__animated
+              animate__fadeOutDown
+              animate__faster
+            `,
+            },
+          })}
       </div>
     </div>
   );

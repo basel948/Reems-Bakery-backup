@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "./AdminLogin.module.css"; // Assuming you have similar CSS
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import StandartSwalAlert from "../UI/SwalAlert/StandartSwalAlert";
 
 function AdminLogin() {
+  const { t, i18n } = useTranslation();
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [password, setPassword] = useState("");
@@ -72,7 +75,11 @@ function AdminLogin() {
         localStorage.setItem("LoggedInUser", JSON.stringify(foundUser));
         navigate(`/admin`);
       } else {
-        alert("Invalid Details, Please try again");
+        StandartSwalAlert({
+          title: t("Dialoges.globalErrorTitle"),
+          titleText: t("Dialoges.invalidDetailsMsg"),
+          icon: "error",
+        });
       }
     } else {
       setIsEmailValid(false);

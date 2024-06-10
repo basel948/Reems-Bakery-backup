@@ -6,7 +6,9 @@ import axios from "axios"; // Import axios for making HTTP requests
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
 import { useDispatch, useSelector } from "react-redux"; // Import hooks from react-redux
 import { loginUser } from "../../Redux/features/userSlice"; // Import loginUser action from userSlice
-import CustomAlert from "../UI/CustomAlert/CustomAlert";
+import { useTranslation } from "react-i18next";
+
+import StandartSwalAlert from "../UI/SwalAlert/StandartSwalAlert";
 
 function Login({ show, onClose, switchToRegister }) {
   // Define state variables using useState hook
@@ -16,6 +18,7 @@ function Login({ show, onClose, switchToRegister }) {
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const { t, i18n } = useTranslation();
 
   // Initialize dispatch and navigate hooks
   const dispatch = useDispatch();
@@ -76,12 +79,25 @@ function Login({ show, onClose, switchToRegister }) {
         .unwrap()
         .then(() => {
           onClose(); // Close the login form
-          <CustomAlert message="تم تسجيل الدخول بنجاح" type="success" />;
+
+          StandartSwalAlert({
+            position: "top",
+            icon: "success",
+            title: t("Dialoges.loginSuccess"),
+            showConfirmButton: false,
+            timer: 1500,
+          });
           navigate("/", { behavior: "smooth" }); // Navigate to the home page
         })
         .catch((err) => {
           console.error("Login error:", err);
-          alert("Login unsuccessful. Please check your details."); // Show error message
+          StandartSwalAlert({
+            position: "top",
+            icon: "error",
+            title: t("Dialoges.loginError"),
+            showConfirmButton: true,
+            confirmButtonText: "OK",
+          });
         });
     } else {
       setIsEmailValid(false);

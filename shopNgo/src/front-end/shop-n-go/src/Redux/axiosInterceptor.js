@@ -3,7 +3,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode'; // Correct the import statement
 import { store } from './store';
 import { logout } from './features/userSlice';
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import Swal from 'sweetalert2';
 
 // Create an Axios instance
 const axiosInstance = axios.create();

@@ -44,17 +44,33 @@
     "to-checkout": "الى قسم الدفع",
     "empty-cart": " سلةالتسوق فارغة، املأها واستمتع بحلوياتنا "
   },
-  "AlertDialog": {
-    "dialoge-title1": "اختيار رائع ، نتمنى أن يعجبك",
-    "dialoge-description1": "هل ترغب في مواصلة التسوق أم الذهاب إلى قسم الدفع؟",
-    "continue-shopping": "مواصلة التسوق",
-    "to-checkout": "اذهب إلى قسم الدفع",
-    "dialoge-title2": "للتأكد من قرارك",
-    "dialoge-description2": "هل أنت متأكد من أنك تريد حذف موقعك الحالي؟    ",
-    "cancel": "الغاء",
-    "delete": "حذف"
-  },
   "Card": {
     "Show-More": "معرفة المزيد"
+  },
+  "Dialoges": {
+    "sessionExpired": "انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى",
+    "greatChoice": "اختيار رائع ، نتمنى أن يعجبك",
+    "continueShoppingQuestion": "هل ترغب في مواصلة التسوق أو الذهاب إلى الدفع؟",
+    "toCheckout": "اذهب إلى قسم الدفع",
+    "continueShopping": "مواصلة التسوق",
+    "confirmDeletionTitle": "تأكيد الحذف",
+    "confirmDeletionText": "هل أنت متأكد من رغبتك في حذف العنصر?",
+    "cancel": "الغاء",
+    "delete": "حذف",
+    "loginSuccess": "تم تسجيل الدخول بنجاح",
+    "logoutSuccess": "تم تسجيل الخروج بنجاح",
+    "loginError": "اسم المستخدم او الرقم السري غير صحيح",
+    "deletedItem": "تم حذف المنتج بنجاح",
+    "deleteTitle": "تم الحذف",
+    "globalErrorTitle": "خطأ!",
+    "globalErrorMsg": "حدث خطأ ما، يرجى المحاولة مرة أخرى",
+    "invalidDetailsMsg": "التفاصيل غير صالحة، يرجى المحاولة مرة أخرى!",
+    "invalidAccountMsg": "الحساب غير صالح، يرجى المحاولة مرة أخرى!",
+    "userExistsMsg": "المستخدم موجود بالفعل، يرجى المحاولة مرة أخرى!",
+    "browserError": "المتصفح غير مدعوم",
+    "GeolocationNotSupported": "تحديد الموقع الجغرافي غير مدعوم من هذا المتصفح.",
+    "GeolocationDenied": "رفض المستخدم طلب تحديد الموقع الجغرافي.",
+    "GeolocationUnavailable": "تحديد الموقع الجغرافي غير متاح.",
+    "GeolocationTimeout": "انتهت مهلة تحديد الموقع الجغرافي."
   }
 }

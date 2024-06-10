@@ -8,6 +8,7 @@ import Login from "../Login/Login";
 import Register from "../Register/Register";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import StandartSwalAlert from "../UI/SwalAlert/StandartSwalAlert";
 
 const Navbar = ({ isTransparent }) => {
   const [scroll, setScroll] = useState(false);
@@ -61,6 +62,14 @@ const Navbar = ({ isTransparent }) => {
     localStorage.removeItem("cartItems");
     handleUserMenuClose();
     dispatch(logout());
+
+    StandartSwalAlert({
+      position: "top",
+      icon: "success",
+      title: t("Dialoges.logoutSuccess"),
+      showConfirmButton: false,
+      timer: 1500,
+    });
     navigate("/", { replace: true });
   };
 
