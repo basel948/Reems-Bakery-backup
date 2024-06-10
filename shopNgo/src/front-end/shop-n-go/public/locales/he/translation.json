@@ -44,13 +44,33 @@
     "to-checkout": "לתשלום",
     "empty-cart": " עגלת הקניות שלכם ריקה, מלאו אותה ותהנו מהממתקים שלנו "
   },
-  "AlertDialog": {
-    "dialoge-title": "בחירה מצוינת, אנו מקווים שתאהבו",
-    "dialoge-description": "האם אתה רוצה להמשיך בקנייה או לעבור לתשלום?",
-    "continue-shopping": "המשך בקניות",
-    "to-checkout": "לתשלום"
-  },
   "Card": {
     "Show-More": "לדעת יותר"
+  },
+  "Dialoges": {
+    "sessionExpired": "הפעלת המושב פגה, אנא התחבר מחדש",
+    "greatChoice": "בחירה מצוינת, אנו מקווים שתאהבו",
+    "continueShoppingQuestion": "האם אתה רוצה להמשיך בקנייה או לעבור לתשלום?",
+    "toCheckout": "לתשלום",
+    "continueShopping": "המשך בקנייה",
+    "confirmDeletionTitle": "אישור מחיקה",
+    "confirmDeletionText": "האם אתה בטוח שברצונך למחוק את המוצר?",
+    "cancel": "ביטול",
+    "delete": "מחק",
+    "loginSuccess": "התחברת בהצלחה",
+    "logoutSuccess": "התנתקת בהצלחה",
+    "loginError": "שם משתמש או סיסמה שגויים",
+    "deletedItem": "המוצר נמחק בהצלחה",
+    "deleteTitle": "נמחק!",
+    "globalErrorTitle": "שגיאה",
+    "globalErrorMsg": "אירעה שגיאה, אנא נסה שוב מאוחר יותר",
+    "invalidDetailsMsg": "פרטים לא חוקיים, אנא נסה שוב!",
+    "invalidAccountMsg": "שגיאה ביצירת חשבון, אנא נסה שוב!",
+    "userExistsMsg": "המשתמש כבר קיים, אנא נסה שוב!",
+    "browserError": "דפדפן לא נתמך",
+    "GeolocationNotSupported": "מיקום גיאוגרפי אינו נתמך על ידי דפדפן זה.",
+    "GeolocationDenied": "המשתמש דחה את הבקשה למיקום גיאוגרפי.",
+    "GeolocationUnavailable": "מיקום גיאוגרפי אינו זמין.",
+    "GeolocationTimeout": "הזמן המרבי לקבלת מיקום גיאוגרפי עבר."
   }
 }

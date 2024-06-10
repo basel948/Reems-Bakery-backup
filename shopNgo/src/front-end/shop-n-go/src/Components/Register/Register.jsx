@@ -9,9 +9,11 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { BsFillTelephoneInboundFill } from "react-icons/bs";
 import LocationButton from "../UI/LocationButton/LocationButton";
 import LocationMap from "../UI/LocationMap/LocationMap";
-import CustomAlert from "../UI/CustomAlert/CustomAlert";
+import { useTranslation } from "react-i18next";
+import StandartSwalAlert from "../UI/SwalAlert/StandartSwalAlert";
 
 function Register({ show, onClose, switchToLogin }) {
+  const { t, i18n } = useTranslation();
   const [username, setUsername] = useState("");
   const [isUsernameValid, setIsUsernameValid] = useState(true);
   const [email, setEmail] = useState("");
@@ -156,20 +158,35 @@ function Register({ show, onClose, switchToLogin }) {
           );
           if (response.status === 200) {
             setUser(response.data);
-            setTimeout(() => {
-              <CustomAlert message="You have successfully been registered!" />;
-              // alert("You have successfully been registered!");
-              switchToLogin();
-            }, 3000);
+            StandartSwalAlert({
+              position: "top",
+              icon: "success",
+              title: t("Dialoges.loginSuccess"),
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            switchToLogin();
           }
         } catch (error) {
-          alert("Error adding employee:", error);
+          StandartSwalAlert({
+            title: t("Dialoges.globalErrorTitle"),
+            titleText: t("Dialoges.invalidAccountMsg"),
+            icon: "error",
+          });
         }
       } else {
-        alert("User details are not valid");
+        StandartSwalAlert({
+          title: t("Dialoges.globalErrorTitle"),
+          titleText: t("Dialoges.invalidDetailsMsg"),
+          icon: "error",
+        });
       }
     } else {
-      alert("User is already registered");
+      StandartSwalAlert({
+        title: t("Dialoges.globalErrorTitle"),
+        titleText: t("Dialoges.userExistsMsg"),
+        icon: "error",
+      });
     }
   };
 

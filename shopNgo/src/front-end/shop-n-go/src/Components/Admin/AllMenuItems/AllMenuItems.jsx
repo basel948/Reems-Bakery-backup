@@ -8,17 +8,18 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import styles from "./AllMenuItems.module.css";
 import ViewItem from "../ViewItem/ViewItem";
-import Alert from "@mui/material/Alert";
-import DeleteItem from "../DeleteItem/DeleteItem";
+import Swal from "sweetalert2";
 import axios from "axios";
 import { updateCategories } from "../../../Redux/features/categoriesSlice"; // Import the action to update categories
+import { useTranslation } from "react-i18next";
+import StandartSwalAlert from "../../UI/SwalAlert/StandartSwalAlert";
 
 export default function AllMenuItems() {
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories.categories);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isViewDialogOpen, setViewDialogOpen] = useState(false);
-  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const columns = [
     { field: "id", headerName: "ID", width: 50 },
@@ -107,42 +108,56 @@ export default function AllMenuItems() {
 
   const deleteItemHandler = (item) => {
     setSelectedProduct(item);
-    setDeleteDialogOpen(true); // Open the dialog
-  };
-
-  const handleCloseDeleteDialog = () => {
-    setDeleteDialogOpen(false);
-    setSelectedProduct(null); // Reset the selected product when the dialog is closed
-  };
-
-  const handleDeleteConfirmation = async (shouldDelete) => {
-    if (shouldDelete) {
-      try {
-        await axios.delete(
-          `http://localhost:8080/api/menuItems/${selectedProduct.id}`
-        );
-        <Alert severity="success">Item deleted successfully!</Alert>;
-
-        // Update categories state to reflect the deletion
-        const updatedCategories = categories.map((category) => {
-          return {
-            ...category,
-            menuItems: category.menuItems.filter(
-              (item) => item.id !== selectedProduct.id
-            ),
-          };
-        });
-        dispatch(updateCategories(updatedCategories)); // Dispatch the action to update categories in the store
-
-        // Update local storage
-        localStorage.setItem("categories", JSON.stringify(updatedCategories));
-      } catch (error) {
-        alert("Error deleting, Check console for error!");
-        console.error(error);
+    StandartSwalAlert({
+      title: t("Dialoges.confirmDeletionTitle"),
+      // titleText: t("Dialoges.dialoge-description2", { itemName: item.name_AR }),
+      titleText: t("Dialoges.confirmDeletionText"),
+      icon: "warning",
+      showConfirmButton: t("Dialoges.delete"),
+      showCancelButton: t("Dialoges.cancel"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDeleteConfirmation();
       }
+    });
+  };
+
+  const handleDeleteConfirmation = async () => {
+    try {
+      await axios.delete(
+        `http://localhost:8080/api/menuItems/${selectedProduct.id}`
+      );
+
+      StandartSwalAlert({
+        title: t("Dialoges.deleteTitle"),
+        titleText: t("Dialoges.deletedItem"),
+        icon: "success",
+      });
+
+      // Update categories state to reflect the deletion
+      const updatedCategories = categories.map((category) => {
+        return {
+          ...category,
+          menuItems: category.menuItems.filter(
+            (item) => item.id !== selectedProduct.id
+          ),
+        };
+      });
+      dispatch(updateCategories(updatedCategories)); // Dispatch the action to update categories in the store
+
+      // Update local storage
+      localStorage.setItem("categories", JSON.stringify(updatedCategories));
+    } catch (error) {
+      StandartSwalAlert({
+        title: t("Dialoges.globalErrorTitle"),
+        titleText: t("Dialoges.globalErrorMsg"),
+        icon: "error",
+      });
+
+      console.error(error);
     }
-    // Close the dialog and reset state
-    setDeleteDialogOpen(false);
+
+    // Reset state
     setSelectedProduct(null);
   };
 
@@ -189,15 +204,6 @@ export default function AllMenuItems() {
           product={selectedProduct}
           open={isViewDialogOpen}
           handleClose={handleCloseViewDialog}
-        />
-      )}
-
-      {selectedProduct && isDeleteDialogOpen && (
-        <DeleteItem
-          product={selectedProduct}
-          open={isDeleteDialogOpen}
-          handleClose={handleCloseDeleteDialog}
-          onConfirmDelete={handleDeleteConfirmation}
         />
       )}
     </div>

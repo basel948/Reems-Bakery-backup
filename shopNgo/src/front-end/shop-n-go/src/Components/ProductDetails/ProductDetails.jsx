@@ -8,9 +8,10 @@ import ContactUs from "../ContactUs/ContactUs";
 import InnerSlider from "../Slider/InnerSlider";
 import Navbar from "../Navbar/Navbar";
 import { useTranslation } from "react-i18next";
-import AlertDialogSlide from "../UI/AlertDialog/AlertDialog";
+
 import { BsCart4 } from "react-icons/bs";
 import axios from "axios";
+import StandartSwalAlert from "../UI/SwalAlert/StandartSwalAlert";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -18,7 +19,6 @@ function ProductDetails() {
   const [product, setProduct] = useState(location.state?.product);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
   const [showLoading, setLoading] = useState(true);
   const categories = useSelector((state) => state.categories.categories);
 
@@ -37,13 +37,17 @@ function ProductDetails() {
           );
           setProduct(response.data);
         } catch (error) {
-          alert("Error fetching product:", error);
+          StandartSwalAlert({
+            icon: "error",
+            title: `${t("Dialoges.globalErrorTitle")}`,
+            titleText: `${t("Dialoges.globalErrorMsg")}`,
+          });
         }
         setLoading(false);
       }
     };
     fetchData();
-  }, [id, product]);
+  }, [id, product, t]);
 
   useEffect(() => {
     if (location.state?.product) {
@@ -68,20 +72,25 @@ function ProductDetails() {
     extraText = `( تحتوي على  ${product?.numberOfServings} قطع )`;
   }
 
-  const handleDialogClose = (userResponse) => {
-    setShowDialog(false);
-    if (userResponse === "agree") {
-      navigate("/shopingCart", { state: { cartItems } });
-    }
-  };
-
   const addToShopingCart = (productDetails) => {
     setCartItems((prevCartItems) => {
       const newCartItems = [...prevCartItems, productDetails];
       localStorage.setItem("cartItems", JSON.stringify(newCartItems));
       return newCartItems;
     });
-    setShowDialog(true);
+    StandartSwalAlert({
+      title: t("Dialoges.greatChoice"),
+      titleText: t("Dialoges.continueShoppingQuestion"),
+      icon: "question",
+      showCancelButton: true,
+      showConfirmButton: true,
+      confirmButtonText: t("Dialoges.toCheckout"),
+      cancelButtonText: t("Dialoges.continueShopping"),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate("/shopingCart", { state: { cartItems } });
+      }
+    });
   };
 
   if (showLoading) {
@@ -147,16 +156,6 @@ function ProductDetails() {
         <FanFavouriteItems currentProduct={product} />
         <ContactUs />
       </footer>
-      {showDialog && (
-        <AlertDialogSlide
-          open={showDialog}
-          onClose={handleDialogClose}
-          dialogeTitle={t("AlertDialog.dialoge-title1")}
-          dialogContentText={t("AlertDialog.dialoge-description1")}
-          disagreeButton={t("AlertDialog.continue-shopping")}
-          agreeButton={t("AlertDialog.to-checkout")}
-        />
-      )}
     </div>
   );
 }

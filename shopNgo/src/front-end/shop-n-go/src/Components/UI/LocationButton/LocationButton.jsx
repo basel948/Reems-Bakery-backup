@@ -1,14 +1,23 @@
 import React from "react";
 import styles from "./LocationButton.module.css";
 import { TfiLocationPin } from "react-icons/tfi";
+import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
+import StandartSwalAlert from "../SwalAlert/StandartSwalAlert";
 
 const LocationButton = ({ onLocationSelect }) => {
+  const { t, i18n } = useTranslation();
+
   const getLocation = () => {
     // console.log("in the getLocation method");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition, showError);
     } else {
-      alert("Geolocation is not supported by this browser.");
+      StandartSwalAlert({
+        title: t("Dialoges.browserError"),
+        titleText: t("Dialoges.GeolocationNotSupported"),
+        icon: "warning",
+      });
     }
   };
 
@@ -83,16 +92,32 @@ const LocationButton = ({ onLocationSelect }) => {
   const showError = (error) => {
     switch (error.code) {
       case error.PERMISSION_DENIED:
-        alert("User denied the request for Geolocation.");
+        StandartSwalAlert({
+          title: "Dialoges.globalErrorTitle",
+          titleText: "Dialoges.GeolocationDenied",
+          icon: "error",
+        });
         break;
       case error.POSITION_UNAVAILABLE:
-        alert("Location information is unavailable.");
+        StandartSwalAlert({
+          title: "Dialoges.globalErrorTitle",
+          titleText: "Dialoges.GeolocationUnavailable",
+          icon: "error",
+        });
         break;
       case error.TIMEOUT:
-        alert("The request to get user location timed out.");
+        StandartSwalAlert({
+          title: "Dialoges.globalErrorTitle",
+          titleText: "Dialoges.GeolocationTimeout",
+          icon: "error",
+        });
         break;
       case error.UNKNOWN_ERROR:
-        alert("An unknown error occurred.");
+        StandartSwalAlert({
+          title: "Dialoges.globalErrorTitle",
+          titleText: "Dialoges.globalErrorMsg",
+          icon: "error",
+        });
         break;
     }
   };
