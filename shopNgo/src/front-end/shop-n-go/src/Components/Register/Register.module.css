@@ -1,0 +1,317 @@
+/* * {
+  background-color: rgb(199, 199, 199);
+} */
+
+.modalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.modal {
+  width: 500px;
+  background-color: transparent;
+  padding: 30px;
+  border-radius: 15px;
+  z-index: 1001; /* Above the modal background */
+}
+
+.closeButton {
+  position: absolute;
+  top: 120px;
+  right: 600px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center {
+  text-align: center;
+}
+
+.login {
+  font-size: 0.9em;
+  font-weight: 500;
+  background-color: #2e2e2e;
+  color: white;
+  font-family: "Cairo", sans-serif;
+  text-decoration: none;
+  padding: 8px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.form_main {
+  min-height: 50vh; /* Minimum height to cover smaller content */
+  max-height: 93vh; /* Maximum height to prevent overflow beyond the viewport */
+  overflow-y: auto; /* Ensures scrolling is enabled when content exceeds max-height */
+  overflow-x: hidden;
+  width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+  padding: 30px;
+  border-radius: 30px;
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.062);
+}
+
+/* For Webkit (Chrome, Safari, etc.) */
+.form_main::-webkit-scrollbar {
+  width: 10px;
+}
+.form_main::-webkit-scrollbar-button {
+  width: 10px;
+}
+
+.form_main::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* For Firefox */
+.form_main {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+.form_main::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 30px; /* match your form's border-radius */
+}
+
+.form_main::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.heading {
+  font-size: 2.5em;
+  color: #2e2e2e;
+  font-weight: 700;
+  font-family: "Cairo", sans-serif;
+  margin-top: 50px;
+}
+
+.inputContainer {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.location-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.locationButton {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 20px 0px;
+}
+
+.locationButtonText {
+  color: rgb(80, 80, 80);
+  font-size: 1.4rem;
+  font-family: "Cairo", sans-serif;
+  font-weight: 500;
+}
+.label {
+  display: block;
+  color: rgb(80, 80, 80);
+  font-family: "Cairo", sans-serif;
+  font-size: 1rem;
+}
+
+.textarea {
+  width: 95%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 2px solid rgb(173, 173, 173);
+  resize: vertical; /* Allows the user to resize the textarea vertically */
+}
+
+.textarea::placeholder {
+  font-family: "Cairo", sans-serif;
+  font-size: 1rem;
+  padding: 5px;
+}
+
+.mapLocationContainer {
+  height: 200px; /* or any other size */
+  width: 100%;
+  margin-bottom: 20px;
+}
+/* For most modern browsers */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.inputIcon {
+  position: absolute;
+  right: 25px;
+}
+
+.eyeIcon {
+  position: absolute;
+  left: 25px;
+  top: 38px;
+}
+
+.inputField {
+  width: 100%;
+  height: 50px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid rgb(173, 173, 173);
+  border-radius: 30px;
+  margin: 20px 10px;
+  color: black;
+  font-size: 1rem;
+  font-weight: 500;
+  padding-right: 40px; /* Add padding on the right; adjust the value as needed */
+  box-sizing: border-box;
+  padding-left: 30px;
+}
+
+.inputField:focus {
+  outline: none;
+  border-bottom: 2px solid rgb(199, 114, 255);
+}
+
+.inputField::placeholder {
+  color: rgb(80, 80, 80);
+  font-size: 1rem;
+  font-family: "Cairo", sans-serif;
+  font-weight: 500;
+}
+
+.button {
+  position: relative;
+  width: 100%;
+  border-radius: 30px;
+  margin: 20px 10px 10px 10px;
+  font-size: larger;
+  padding-right: 40px; /* Add padding on the right; adjust the value as needed */
+  padding-left: 30px;
+  color: white;
+  border: 2px solid #8000ff !important;
+  background-color: #8000ff !important;
+  cursor: pointer;
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.253);
+  height: 100%;
+  width: 150px;
+  top: 0;
+  left: -200px;
+  font-family: "Cairo", sans-serif;
+  border-bottom-right-radius: 100px;
+  border-top-left-radius: 100px;
+  filter: blur(10px);
+  transition-duration: 0.5s;
+}
+
+.button:hover::after {
+  transform: translateX(600px) !important;
+  transition-duration: 0.5s !important;
+}
+
+.signupContainer {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.signupContainer p {
+  font-size: 0.9em;
+  font-weight: 500;
+  color: black;
+}
+
+.social-message {
+  display: flex;
+  align-items: center;
+  padding-top: 0.5rem;
+  font-family: "Cairo", sans-serif;
+}
+
+.line {
+  height: 1px;
+  flex: 1 1 0%;
+  background-color: rgba(55, 65, 81, 1);
+}
+
+.social-message .message {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1rem;
+  color: rgba(156, 163, 175, 1);
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+}
+
+.social-icons .icon {
+  border-radius: 0.125rem;
+  padding: 1.75rem 2rem 1rem 2rem;
+  border: none;
+  background-color: transparent;
+  margin-left: 8px;
+}
+
+.social-icons .icon svg {
+  height: 2rem;
+  width: 2rem;
+  cursor: pointer;
+  fill: black;
+}
+
+.signUp {
+  font-size: 0.9em;
+  font-weight: 500;
+  background-color: #2e2e2e;
+  color: white;
+  text-decoration: none;
+  padding: 8px 25px;
+  border-radius: 20px;
+  font-family: "Cairo", sans-serif;
+}
+
+.invalid {
+  border: 2px solid red;
+}

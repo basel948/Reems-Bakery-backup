@@ -1,0 +1,31 @@
+.popup {
+  position: fixed;
+  top: 70px;
+  right: 0px;
+  background-color: #281b1bac;
+  color: white;
+  font-family: "Cairo", sans-serif;
+  padding: 5px;
+  width: 15%;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.timerLine {
+  height: 5px;
+  background-color: #d3cfcf;
+  width: 100%;
+  animation: fillUp ease-out;
+  border-radius: 5px;
+}
+
+@keyframes fillUp {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}

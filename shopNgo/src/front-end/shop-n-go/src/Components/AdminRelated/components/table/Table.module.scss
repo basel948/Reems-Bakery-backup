@@ -1,0 +1,23 @@
+.table {
+  color: blue;
+  .cellWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .status {
+    padding: 5px;
+    border-radius: 5px;
+
+    &.statusPending {
+      color: goldenrod;
+      background-color: rgba(189, 189, 3, 0.103);
+    }
+
+    &.statusApproved {
+      color: green;
+      background-color: rgba(0, 128, 0, 0.151);
+    }
+  }
+}

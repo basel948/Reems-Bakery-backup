@@ -1,0 +1,115 @@
+.container {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(245, 245, 245, 0.66);
+}
+
+.menuItemCard {
+  width: 250px;
+  margin: 10px;
+  padding: 15px;
+  cursor: pointer;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px #aaa;
+  transition: transform 0.3s ease;
+}
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.menuItemCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 12px #888;
+}
+
+.menuItemCard img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.titleLine {
+  height: 2px;
+  background-color: black;
+  flex-grow: 1;
+}
+
+.menuItemName {
+  font-weight: 600;
+  margin: 10px 0;
+}
+
+.menuItemDescription {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 5px 0;
+}
+
+.menuItemPrice {
+  color: black;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.categoryTitle {
+  position: relative;
+  text-align: right;
+  width: 100%;
+  margin: 15px 150px; /* The same right margin as the cards */
+}
+
+.categoryTitle::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 60%; /* Center vertically */
+  width: calc(100% - 150px); /* You can adjust as needed */
+  height: 2px;
+  background-color: black; /* Color of the line */
+}
+
+.menuItemsContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 50px 0px 100px 0px;
+  padding-right: 10px;
+}
+
+.categoryTitleContainer {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin: 20px 0px;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.menuItemCard img {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn ease 0.5s;
+}
+
+.fade-in {
+  animation: fadeIn ease 0.5s forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
