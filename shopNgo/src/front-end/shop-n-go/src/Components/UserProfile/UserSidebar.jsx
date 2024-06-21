@@ -4,10 +4,18 @@ import { CgProfile } from "react-icons/cg";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { LiaShoppingBagSolid } from "react-icons/lia";
 import { TiLocationOutline } from "react-icons/ti";
+<<<<<<< HEAD
+=======
+import { useTranslation } from "react-i18next";
+>>>>>>> master
 
 import { Link } from "react-router-dom";
 
 const UserSidebar = ({ activepage }) => {
+<<<<<<< HEAD
+=======
+  const { t, i18n } = useTranslation();
+>>>>>>> master
   return (
     <div className={styles["userSidebar"]}>
       {activepage === "accountsettings" ? (

@@ -49,6 +49,14 @@
   },
   "Dialoges": {
     "sessionExpired": "انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى",
+<<<<<<< HEAD
+=======
+    "personalDetails": "التفاصيل الشخصية",
+    "userName": "اسم المستخدم",
+    "phoneNumber": "رقم الهاتف",
+    "email": "البريد الالكتروني",
+    "saveChanges": "حفظ التغييرات",
+>>>>>>> master
     "greatChoice": "اختيار رائع ، نتمنى أن يعجبك",
     "continueShoppingQuestion": "هل ترغب في مواصلة التسوق أو الذهاب إلى الدفع؟",
     "toCheckout": "اذهب إلى قسم الدفع",
