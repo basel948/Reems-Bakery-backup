@@ -1,6 +1,6 @@
 // src/Redux/store.js
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './features/userSlice';
+import userReducer, { initializeUser } from './features/userSlice';
 import menuItemsReducer from './features/menuItemsSlice';
 import categoriesReducer from './features/categoriesSlice';
 import appReducer from './features/appSlice';
@@ -19,5 +19,7 @@ export const store = configureStore({
     },
     devTools: process.env.NODE_ENV !== 'production',
 });
+
+store.dispatch(initializeUser());
 
 export default store;

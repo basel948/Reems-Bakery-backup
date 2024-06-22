@@ -2,12 +2,10 @@ import React, { useState } from "react"; // Import React and useState hook
 import styles from "./Login.module.css"; // Import CSS module for styling
 import { MdAlternateEmail, MdLock } from "react-icons/md"; // Import icons from react-icons
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import more icons from react-icons
-import axios from "axios"; // Import axios for making HTTP requests
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
 import { useDispatch, useSelector } from "react-redux"; // Import hooks from react-redux
 import { loginUser } from "../../Redux/features/userSlice"; // Import loginUser action from userSlice
 import { useTranslation } from "react-i18next";
-
 import StandartSwalAlert from "../UI/SwalAlert/StandartSwalAlert";
 
 function Login({ show, onClose, switchToRegister }) {
@@ -18,7 +16,7 @@ function Login({ show, onClose, switchToRegister }) {
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   // Initialize dispatch and navigate hooks
   const dispatch = useDispatch();
@@ -72,7 +70,7 @@ function Login({ show, onClose, switchToRegister }) {
         login: email,
         password: password,
       };
-      console.log("User:", user);
+      console.log("User in Login:", user);
 
       // Dispatch loginUser action with user data
       dispatch(loginUser(user))

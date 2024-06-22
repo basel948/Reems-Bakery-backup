@@ -4,24 +4,18 @@ import { CgProfile } from "react-icons/cg";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { LiaShoppingBagSolid } from "react-icons/lia";
 import { TiLocationOutline } from "react-icons/ti";
-<<<<<<< HEAD
-=======
 import { useTranslation } from "react-i18next";
->>>>>>> master
 
 import { Link } from "react-router-dom";
 
 const UserSidebar = ({ activepage }) => {
-<<<<<<< HEAD
-=======
   const { t, i18n } = useTranslation();
->>>>>>> master
   return (
     <div className={styles["userSidebar"]}>
       {activepage === "accountsettings" ? (
         <div className={styles["section2"]}>
           <CgProfile className={styles["icon"]} />
-          <span>Account Settings</span>
+          <span>{t("Dialoges.accountSettings")}</span>
         </div>
       ) : (
         <Link
@@ -30,7 +24,7 @@ const UserSidebar = ({ activepage }) => {
         >
           <div className={styles["section1"]}>
             <CgProfile className={styles["icon"]} />
-            <span>Account Settings</span>
+            <span>{t("Dialoges.accountSettings")}</span>
           </div>
         </Link>
       )}
@@ -38,7 +32,7 @@ const UserSidebar = ({ activepage }) => {
       {activepage === "yourorders" ? (
         <div className={styles["section2"]}>
           <LiaShoppingBagSolid className={styles["icon"]} />
-          <span>Your Orders</span>
+          <span>{t("Dialoges.yourOrders")}</span>
         </div>
       ) : (
         <Link
@@ -47,7 +41,7 @@ const UserSidebar = ({ activepage }) => {
         >
           <div className={styles["section1"]}>
             <LiaShoppingBagSolid className={styles["icon"]} />
-            <span>Your Orders</span>
+            <span>{t("Dialoges.yourOrders")}</span>
           </div>
         </Link>
       )}
@@ -55,7 +49,7 @@ const UserSidebar = ({ activepage }) => {
       {activepage === "useraddress" ? (
         <div className={styles["section2"]}>
           <TiLocationOutline className={styles["icon"]} />
-          <span>Update Address</span>
+          <span>{t("Dialoges.updatedAddress")}</span>
         </div>
       ) : (
         <Link
@@ -64,7 +58,7 @@ const UserSidebar = ({ activepage }) => {
         >
           <div className={styles["section1"]}>
             <TiLocationOutline className={styles["icon"]} />
-            <span>Update Address</span>
+            <span>{t("Dialoges.updatedAddress")}</span>
           </div>
         </Link>
       )}
@@ -72,7 +66,7 @@ const UserSidebar = ({ activepage }) => {
       {activepage === "changepassword" ? (
         <div className={styles["section2"]}>
           <RiLockPasswordLine className={styles["icon"]} />
-          <span>Change Password</span>
+          <span>{t("Dialoges.changePassword")}</span>
         </div>
       ) : (
         <Link
@@ -81,7 +75,7 @@ const UserSidebar = ({ activepage }) => {
         >
           <div className={styles["section1"]}>
             <RiLockPasswordLine className={styles["icon"]} />
-            <span>Change Password</span>
+            <span>{t("Dialoges.changePassword")}</span>
           </div>
         </Link>
       )}

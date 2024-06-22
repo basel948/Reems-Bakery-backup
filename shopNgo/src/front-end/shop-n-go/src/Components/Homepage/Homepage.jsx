@@ -18,6 +18,9 @@ function Homepage() {
     (state) => state.app.translationInProgress
   );
 
+  const userData = useSelector((state) => state.user.userData);
+  const userStatus = useSelector((state) => state.user.status);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []); // we do this to reset the scroll so we don't scroll to the bottom automatically

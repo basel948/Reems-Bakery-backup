@@ -1,8 +1,8 @@
 package com.bluetech.shopNgo.Security.Services;
 
-// Import statements
 import com.bluetech.shopNgo.Models.Order;
 import com.bluetech.shopNgo.Models.User;
+import com.bluetech.shopNgo.DTO.UserLocationDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,64 +13,46 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-// Class declaration implementing UserDetails interface for Spring Security
 public class UserDetailsImpl implements UserDetails {
-    private static final long serialVersionUID = 1L; // For serialization
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private String username;
     private String email;
     private String phoneNumber;
-    private Double latitude;
-    private Double longitude;
-    private String city;
-    private String address;
-    private String moreInfo;
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
     private List<Order> orders;
+    private List<UserLocationDTO> locations;
 
-    // Constructor
     public UserDetailsImpl(Long id, String username, String email, String password, String phoneNumber,
-                           Double latitude, Double longitude, String city, String address, String moreInfo,
-                           Collection<? extends GrantedAuthority> authorities , List<Order> orders) {
+                           Collection<? extends GrantedAuthority> authorities, List<Order> orders, List<UserLocationDTO> locations) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.city = city;
-        this.address = address;
-        this.moreInfo = moreInfo;
         this.authorities = authorities;
         this.orders = orders;
+        this.locations = locations;
     }
 
-    // Static method to create UserDetailsImpl from a User entity
     public static UserDetailsImpl build(User user) {
-        // Converts roles to Spring Security authorities
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());
 
-        // Returns a new instance of UserDetailsImpl
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getPhoneNumber(),
-                user.getLocation().getLatitude(),
-                user.getLocation().getLongitude(),
-                user.getLocation().getCity(),
-                user.getLocation().getAddress(),
-                user.getLocation().getMoreInfo(),
                 authorities,
-                user.getOrders());
+                user.getOrders(),
+                user.getLocations());
     }
 
     public Long getId() {
@@ -85,28 +67,8 @@ public class UserDetailsImpl implements UserDetails {
         return phoneNumber;
     }
 
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getMoreInfo() {
-        return moreInfo;
-    }
-
-    public Location getLocation() {
-        return new Location(latitude, longitude, city, address, moreInfo);
+    public List<UserLocationDTO> getLocations() {
+        return locations;
     }
 
     @Override
@@ -142,42 +104,5 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    // Inner class to represent Location
-    public static class Location {
-        private Double latitude;
-        private Double longitude;
-        private String city;
-        private String address;
-        private String moreInfo;
-
-        public Location(Double latitude, Double longitude, String city, String address, String moreInfo) {
-            this.latitude = latitude;
-            this.longitude = longitude;
-            this.city = city;
-            this.address = address;
-            this.moreInfo = moreInfo;
-        }
-
-        public Double getLatitude() {
-            return latitude;
-        }
-
-        public Double getLongitude() {
-            return longitude;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public String getMoreInfo() {
-            return moreInfo;
-        }
     }
 }

@@ -1,7 +1,7 @@
 // src/Components/UI/SwalAlert/StandartSwalAlert.js
 import Swal from 'sweetalert2';
 
-const StandartSwalAlert = ({ title, titleText, text, icon, position = 'top', timer, showConfirmButton, showCancelButton, confirmButtonText, cancelButtonText, showClass, hideClass }) => {
+const StandartSwalAlert = ({ title, titleText, text, icon, position = 'top', timer = 3000, showConfirmButton, showCancelButton, confirmButtonText, cancelButtonText, showClass, hideClass }) => {
     return Swal.fire({
         title,
         titleText,

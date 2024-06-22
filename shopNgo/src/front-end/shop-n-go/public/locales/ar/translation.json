@@ -49,14 +49,23 @@
   },
   "Dialoges": {
     "sessionExpired": "انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى",
-<<<<<<< HEAD
-=======
     "personalDetails": "التفاصيل الشخصية",
     "userName": "اسم المستخدم",
     "phoneNumber": "رقم الهاتف",
     "email": "البريد الالكتروني",
     "saveChanges": "حفظ التغييرات",
->>>>>>> master
+    "accountSettings": "إعدادات الحساب",
+    "yourOrders": "طلباتك السابقة",
+    "updatedAddress": "تحديث العنوان",
+    "changePassword": "تغيير كلمة المرور",
+    "updatedSeccessfully": "تم التحديث بنجاح",
+    "updateFailedTryAgain": "فشل التحديث، يرجى المحاولة مرة أخرى",
+    "invalidUserNameTitle": "اسم المستخدم غير صالح",
+    "invalidUserNameMsg": "اسم المستخدم يجب أن يحتوي على الاقل 3 حروف",
+    "invalidPhoneNumberTitle": "رقم الهاتف غير صالح",
+    "invalidPhoneNumberMsg": "رقم الهاتف يجب أن يحتوي على 10 أرقام",
+    "invalidEmailTitle": "البريد الالكتروني غير صالح",
+    "invalidEmailMsg": "البريد الإلكتروني مستخدم أو بتنسيق خاطئ",
     "greatChoice": "اختيار رائع ، نتمنى أن يعجبك",
     "continueShoppingQuestion": "هل ترغب في مواصلة التسوق أو الذهاب إلى الدفع؟",
     "toCheckout": "اذهب إلى قسم الدفع",
