@@ -1,16 +1,20 @@
 package com.bluetech.shopNgo.Controllers;
 
+import com.bluetech.shopNgo.DTO.PasswordChangeRequest;
 import com.bluetech.shopNgo.DTO.UserLocationDTO;
 import com.bluetech.shopNgo.Database.UserRepository;
 import com.bluetech.shopNgo.Exceptions.ResourceNotFoundException;
 import com.bluetech.shopNgo.Models.User;
 import com.bluetech.shopNgo.Security.JWT.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.Encoder;
 import java.util.List;
 
 @RestController
@@ -22,6 +26,9 @@ public class UserController {
 
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/currentUser")
     public ResponseEntity<User> getCurrentUser(Authentication authentication) {
@@ -112,6 +119,26 @@ public class UserController {
         }
         return ResponseEntity.ok(userRepository.save(user));
     }
+
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestHeader("Authorization") String token, @RequestBody PasswordChangeRequest passwordChangeRequest) {
+        // Decode JWT token to get user details
+        String username = jwtUtils.getUserNameFromJwtToken(token.substring(7));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        // Check if the old password matches
+        if (!passwordEncoder.matches(passwordChangeRequest.getOldPassword(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect current password");
+        }
+
+        // Update the password
+        user.setPassword(passwordEncoder.encode(passwordChangeRequest.getNewPassword()));
+        userRepository.save(user);
+
+        return ResponseEntity.ok("Password updated successfully");
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
