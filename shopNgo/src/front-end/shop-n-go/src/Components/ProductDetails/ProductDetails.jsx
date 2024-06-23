@@ -39,8 +39,8 @@ function ProductDetails() {
         } catch (error) {
           StandartSwalAlert({
             icon: "error",
-            title: `${t("Dialoges.globalErrorTitle")}`,
-            titleText: `${t("Dialoges.globalErrorMsg")}`,
+            title: t("Dialoges.globalErrorTitle"),
+            titleText: t("Dialoges.globalErrorMsg"),
           });
         }
         setLoading(false);
@@ -86,6 +86,7 @@ function ProductDetails() {
       showConfirmButton: true,
       confirmButtonText: t("Dialoges.toCheckout"),
       cancelButtonText: t("Dialoges.continueShopping"),
+      timer: null,
     }).then((result) => {
       if (result.isConfirmed) {
         navigate("/shopingCart", { state: { cartItems } });

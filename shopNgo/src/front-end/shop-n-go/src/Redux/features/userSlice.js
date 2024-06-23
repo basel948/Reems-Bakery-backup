@@ -59,6 +59,25 @@ export const updateUser = createAsyncThunk('user/updateUser', async (userData, {
     }
 });
 
+// Async thunk to change password
+export const changePassword = createAsyncThunk('user/changePassword', async ({ passwordData, token }, { rejectWithValue }) => {
+    try {
+        console.log("Password Data in the UserSlice: ", passwordData);
+        console.log("Token in the UserSlice: ", token);
+        const response = await axios.put('http://localhost:8080/api/auth/users/changePassword', passwordData, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log("Response from the UserSlice: ", response.data);
+        return response.data;
+    } catch (error) {
+        console.log("Error in the UserSlice: ", error);
+        return rejectWithValue(error.response.data);
+    }
+});
+
+
 // Async thunk to initialize user state
 export const initializeUser = createAsyncThunk('user/initializeUser', async (_, { dispatch }) => {
     const token = localStorage.getItem('jwtToken');
@@ -144,6 +163,16 @@ const userSlice = createSlice({
             .addCase(initializeUser.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
+            })
+            .addCase(changePassword.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(changePassword.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+            })
+            .addCase(changePassword.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload || action.error.message;
             });
     },
 });

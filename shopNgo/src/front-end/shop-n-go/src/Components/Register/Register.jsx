@@ -65,9 +65,7 @@ function Register({ show, onClose, switchToLogin }) {
 
   const rePasswordHandler = (e) => {
     setRePassword(e.target.value);
-    setIsRePasswordValid(
-      e.target.value.length > 4 && passHasCapital(e.target.value)
-    );
+    setIsRePasswordValid(e.target.value === password);
   };
 
   const phoneNumberHandler = (e) => {
@@ -162,8 +160,6 @@ function Register({ show, onClose, switchToLogin }) {
               position: "top",
               icon: "success",
               title: t("Dialoges.loginSuccess"),
-              showConfirmButton: false,
-              timer: 1500,
             });
             switchToLogin();
           }

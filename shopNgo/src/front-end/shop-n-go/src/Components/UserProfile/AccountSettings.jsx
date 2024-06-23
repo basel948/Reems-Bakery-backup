@@ -80,14 +80,16 @@ const AccountSettings = () => {
         .unwrap()
         .then(() => {
           StandartSwalAlert({
-            title: t("Dialoges.updatedSeccessfully"),
+            title: t("Dialoges.updatedSeccessfullyTitle"),
+            text: t("Dialoges.updatedSeccessfullyMsg"),
             icon: "success",
           });
           navigate("/");
         })
         .catch((error) => {
           StandartSwalAlert({
-            title: t("Dialoges.updateFailedTryAgain"),
+            title: t("Dialoges.updateFailedTryAgainTitle"),
+            text: t("Dialoges.updateFailedTryAgainMsg"),
             icon: "error",
           });
         });

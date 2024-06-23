@@ -82,8 +82,6 @@ function Login({ show, onClose, switchToRegister }) {
             position: "top",
             icon: "success",
             title: t("Dialoges.loginSuccess"),
-            showConfirmButton: false,
-            timer: 1500,
           });
           navigate("/", { behavior: "smooth" }); // Navigate to the home page
         })
@@ -94,7 +92,8 @@ function Login({ show, onClose, switchToRegister }) {
             icon: "error",
             title: t("Dialoges.loginError"),
             showConfirmButton: true,
-            confirmButtonText: "OK",
+            confirmButtonText: t("Dialoges.ok"),
+            timer: null,
           });
         });
     } else {

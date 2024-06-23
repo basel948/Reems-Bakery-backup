@@ -115,6 +115,7 @@ export default function AllMenuItems() {
       icon: "warning",
       showConfirmButton: t("Dialoges.delete"),
       showCancelButton: t("Dialoges.cancel"),
+      timer: null,
     }).then((result) => {
       if (result.isConfirmed) {
         handleDeleteConfirmation();

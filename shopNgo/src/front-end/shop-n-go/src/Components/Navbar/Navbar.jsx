@@ -67,8 +67,6 @@ const Navbar = ({ isTransparent }) => {
       position: "top",
       icon: "success",
       title: t("Dialoges.logoutSuccess"),
-      showConfirmButton: false,
-      timer: 1500,
     });
     navigate("/", { replace: true });
   };
