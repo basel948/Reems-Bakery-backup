@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.beans.Encoder;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth/users")
@@ -63,12 +64,15 @@ public class UserController {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with Id " + id + " was not found"));
 
+        // Assign a unique ID to the location
+        locationDto.setId(UUID.randomUUID().toString());
+
         List<UserLocationDTO> locations = user.getLocations();
         locations.add(locationDto);
         user.setLocations(locations);
 
         userRepository.save(user);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(locationDto);
     }
 
     @PutMapping("/location/{id}")
@@ -78,6 +82,7 @@ public class UserController {
 
         List<UserLocationDTO> locations = user.getLocations();
         if (index >= 0 && index < locations.size()) {
+            locationDto.setId(locations.get(index).getId()); // Preserve the original ID
             locations.set(index, locationDto);
             user.setLocations(locations);
             userRepository.save(user);
@@ -85,7 +90,7 @@ public class UserController {
             throw new ResourceNotFoundException("Location index out of bounds");
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(locationDto);
     }
 
     @DeleteMapping("/location/{id}")

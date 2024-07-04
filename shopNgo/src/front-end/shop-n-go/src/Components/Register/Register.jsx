@@ -11,6 +11,13 @@ import LocationButton from "../UI/LocationButton/LocationButton";
 import LocationMap from "../UI/LocationMap/LocationMap";
 import { useTranslation } from "react-i18next";
 import StandartSwalAlert from "../UI/SwalAlert/StandartSwalAlert";
+import {
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from "@mui/material";
 
 function Register({ show, onClose, switchToLogin }) {
   const { t, i18n } = useTranslation();
@@ -25,8 +32,8 @@ function Register({ show, onClose, switchToLogin }) {
   const [rePassword, setRePassword] = useState("");
   const [isRePasswordValid, setIsRePasswordValid] = useState(true);
   const [moreInfo, setMoreInfo] = useState("");
-  const [currentLocation, setCurrentLocation] = useState({});
-  const [isCurrentLocationValid, setIsCurrentLocationValid] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [locationType, setLocationType] = useState("Home"); // Default location type
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isRePasswordVisible, setIsRePasswordVisible] = useState(false);
@@ -79,9 +86,6 @@ function Register({ show, onClose, switchToLogin }) {
 
   const handleLocation = (latitude, longitude, address, city) => {
     setCurrentLocation({ latitude, longitude, address, city });
-    if (latitude && longitude) {
-      setIsCurrentLocationValid(true);
-    }
   };
 
   const handleCloseClick = (e) => {
@@ -125,7 +129,6 @@ function Register({ show, onClose, switchToLogin }) {
       setIsPasswordValid(false);
       setIsRePasswordValid(false);
       setIsPhoneNumberValid(false);
-      setIsCurrentLocationValid(false);
       return;
     }
 
@@ -135,19 +138,16 @@ function Register({ show, onClose, switchToLogin }) {
         isEmailValid &&
         isPasswordValid &&
         rePassword === password &&
-        isPhoneNumberValid &&
-        isCurrentLocationValid
+        isPhoneNumberValid
       ) {
         const newUser = {
           username: username,
           email: email,
           password: password,
           phoneNumber: phoneNumber,
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
-          city: currentLocation.city,
-          address: currentLocation.address,
-          moreInfo: moreInfo,
+          locations: currentLocation
+            ? [{ ...currentLocation, type: locationType, moreInfo }]
+            : [],
         };
         try {
           const response = await axios.post(
@@ -291,7 +291,9 @@ function Register({ show, onClose, switchToLogin }) {
                 />
               </div>
 
-              {currentLocation.latitude && currentLocation.longitude ? (
+              {currentLocation &&
+              currentLocation.latitude &&
+              currentLocation.longitude ? (
                 <div className={styles["location-section"]}>
                   <div className={styles["mapLocationContainer"]}>
                     <LocationMap
@@ -299,12 +301,45 @@ function Register({ show, onClose, switchToLogin }) {
                       longitude={currentLocation.longitude}
                     />
                   </div>
+                  <div>
+                    <FormControl
+                      component="fieldset"
+                      className={styles["radio-group"]}
+                    >
+                      <FormLabel component="legend">نوع الموقع</FormLabel>
+
+                      <RadioGroup
+                        row
+                        aria-label="locationType"
+                        name="locationType"
+                        value={locationType}
+                        onChange={(e) => setLocationType(e.target.value)}
+                      >
+                        <FormControlLabel
+                          value="Home"
+                          control={<Radio />}
+                          label="البيت"
+                        />
+                        <FormControlLabel
+                          value="Work"
+                          control={<Radio />}
+                          label="العمل"
+                        />
+                        <FormControlLabel
+                          value="Other"
+                          control={<Radio />}
+                          label="أخرى"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </div>
                   <textarea
                     rows="4"
                     name="moreinfo"
                     id="moreinfo"
                     className={styles.textarea}
                     placeholder="اضف معلومات اضافيه عن الموقع"
+                    value={moreInfo}
                     onChange={moreInfoHandler}
                   ></textarea>
                 </div>

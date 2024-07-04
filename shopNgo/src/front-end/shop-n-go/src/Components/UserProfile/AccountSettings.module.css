@@ -6,7 +6,6 @@
 }
 
 .mainHeader {
-  /* her we change the to the color we want */
   color: black;
   font-size: 30px;
   font-weight: 300;
@@ -16,8 +15,9 @@
 
 .form {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
   padding: 10px 20px;
@@ -29,6 +29,7 @@
   width: 45%;
   margin: 10px;
 }
+
 label {
   font-size: 1.2rem;
   font-weight: 300;
@@ -36,7 +37,7 @@ label {
 }
 
 input {
-  padding: 10px 20px;
+  padding: 10px 0px;
   border: 1px solid rgb(207, 207, 207);
   border-radius: 5px;
   outline: none;

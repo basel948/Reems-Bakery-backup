@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -93,8 +94,18 @@ public class AuthController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()), // Encode the password
                 signUpRequest.getPhoneNumber(),
-                signUpRequest.getLocations() // Use signUpRequest.getLocations() directly
+                signUpRequest.getLocations() // Use signUpRequest.getLocations() directly, it can be null
         );
+
+        // Ensure locations have unique IDs
+        if (user.getLocations() != null) {
+            for (UserLocationDTO location : user.getLocations()) {
+                if (location.getId() == null) {
+                    location.setId(UUID.randomUUID().toString());
+                }
+            }
+        }
+
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();

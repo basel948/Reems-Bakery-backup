@@ -71,6 +71,13 @@
   border-radius: 30px;
   box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.062);
 }
+.radio-group {
+  display: flex;
+  align-content: center;
+  text-align: center;
+  justify-content: space-between;
+  margin: 20px 0px;
+}
 
 /* For Webkit (Chrome, Safari, etc.) */
 .form_main::-webkit-scrollbar {

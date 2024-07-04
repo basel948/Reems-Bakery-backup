@@ -19,9 +19,8 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "email")
         }
 )
-@Data //@Setter , @Getter , @ToString , @EqualsAndHashCode , @RequiredArgsConstructor
+@Data
 @NoArgsConstructor
-//@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
